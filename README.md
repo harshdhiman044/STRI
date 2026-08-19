@@ -1,0 +1,2 @@
+# STRI
+Vibe Coding Project 
