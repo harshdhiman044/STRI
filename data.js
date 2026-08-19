@@ -1,8 +1,8 @@
 window.STRI_DATA = {
   // Location being analyzed
   location: {
-    name: 'Mullana → Ambala Cantt',
-    from: 'Mullana',
+    name: 'Ambala (Cantt & City)',
+    from: 'Ambala City',
     to: 'Ambala Cantt',
     totalOpinions: 248,
     safetyPatterns: 17,
@@ -52,100 +52,122 @@ window.STRI_DATA = {
 
   // AI Insight
   aiInsight: {
-    summary: 'Overall community sentiment is moderately positive during daytime. However, recurring negative opinions appear around night-time safety, particularly poor street lighting and reduced pedestrian activity after dark.',
+    summary: 'Across Ambala Cantt & Ambala City, daytime sentiment is strongly positive in bustling trade hubs like Sadar Bazar and Cloth Market. However, key transit junctions—especially Jagadhri Road Bus Stand and outer Sector 7 stretches—face repeated night-time lighting and pedestrian crossing safety concerns.',
     concerns: [
-      'Poor street lighting — 42 mentions',
-      'Night-time isolation — 31 mentions',
-      'Unsafe crossings — 27 mentions',
-      'Chaotic traffic during peak hours — 23 mentions'
+      'Jagadhri Road Bus Stand crossing hazard — 32 mentions',
+      'Poor lighting in Ambala back-lanes & underpasses — 42 mentions',
+      'Night-time isolation in outer Sector 7 — 24 mentions',
+      'Chaotic peak hour traffic near Cantt Station — 23 mentions'
     ],
     positives: [
-      'High daytime activity — 46 mentions',
-      'Nearby shops and vendors — 38 mentions',
-      'Good road condition — 54 mentions',
-      'Public transport availability — 22 mentions'
+      'High footfall & vibrancy in Sadar Bazar — 46 mentions',
+      'Busy retail presence in Cloth Market — 38 mentions',
+      'Well-maintained GT Road corridor — 54 mentions',
+      '24/7 auto availability near Cantt Railway Junction — 31 mentions'
     ],
-    emergingTrend: 'Positive daytime sentiment has improved over recent reports, while night-time sentiment remains comparatively negative. Community members increasingly mention the need for better street lighting near the bus stand crossing.',
-    recommendation: 'Improving lighting near the bus stand and increasing visibility around the crossing could address two of the most frequently reported concerns. Encouraging nearby shops to stay open later could also improve perceived evening safety.'
+    emergingTrend: 'Positive daytime sentiment across Ambala markets has risen by 8%, while evening transit areas near the Cantt Bus Stand remain comparatively negative due to ongoing crossing maintenance and dim lighting.',
+    recommendation: 'Installing high-mast LED lighting along Jagadhri Road and establishing pedestrian-controlled signal crossings near Ambala Cantt Bus Stand will directly resolve the top community-reported safety bottlenecks.'
   },
 
   // Time-based safety
   timeSafety: [
-    { period: 'Morning', time: '6 AM – 12 PM', icon: '🌅', score: 84, sentiment: 'positive', description: 'Active community movement, schools and shops opening. Strong perceived safety.' },
-    { period: 'Afternoon', time: '12 PM – 5 PM', icon: '☀️', score: 88, sentiment: 'positive', description: 'Peak activity hours. Highest reported comfort levels and positive sentiment.' },
-    { period: 'Evening', time: '5 PM – 8 PM', icon: '🌆', score: 67, sentiment: 'mixed', description: 'Activity decreasing. Lighting concerns begin. Mixed community sentiment.' },
-    { period: 'Night', time: '8 PM – 6 AM', icon: '🌙', score: 43, sentiment: 'negative', description: 'Low pedestrian activity. Poor lighting frequently reported. Negative sentiment dominant.' }
+    { period: 'Morning', time: '6 AM – 12 PM', icon: '🌅', score: 84, sentiment: 'positive', description: 'Active school and market movement across Ambala. High perceived safety and open shops.' },
+    { period: 'Afternoon', time: '12 PM – 5 PM', icon: '☀️', score: 88, sentiment: 'positive', description: 'Peak commercial hours in Cloth Market & Sadar Bazar. Highest reported comfort levels.' },
+    { period: 'Evening', time: '5 PM – 8 PM', icon: '🌆', score: 67, sentiment: 'mixed', description: 'Heavy commuter rush along GT Road. Lighting concerns begin as shops start closing.' },
+    { period: 'Night', time: '8 PM – 6 AM', icon: '🌙', score: 43, sentiment: 'negative', description: 'Transit areas deserted except railway station. Dim lighting and low foot traffic dominant.' }
   ],
-  timeSafetyExplanation: 'Community sentiment becomes significantly more negative after 8 PM, primarily due to repeated mentions of poor lighting and reduced pedestrian activity.',
+  timeSafetyExplanation: 'Community sentiment across Ambala drops sharply after 8 PM, driven by reduced pedestrian presence on connecting roads and inadequate lighting around underpasses and bus terminals.',
 
-  // Map hotspots
+  // Ambala Map hotspots
   hotspots: [
     {
-      id: 'main-market',
-      name: 'Main Market',
+      id: 'sadar-bazar',
+      name: 'Sadar Bazar (Ambala Cantt)',
       score: 86,
       sentiment: 'positive',
-      x: 35, y: 30,
-      opinions: 62,
-      description: 'Strong daytime activity and positive walkability sentiment.',
-      concerns: ['Evening crowd reduces — 8 mentions'],
-      positives: ['Busy shops — 28 mentions', 'Good lighting — 22 mentions', 'Always crowded — 18 mentions']
+      x: 580, y: 190,
+      opinions: 68,
+      description: 'Major bustling commercial hub in Ambala Cantt with vibrant shops and constant police patrol.',
+      concerns: ['Congested parking during festive hours — 11 mentions'],
+      positives: ['Dense foot traffic & active shops — 34 mentions', 'Bright streetlights — 29 mentions', 'Frequent PCR van patrols — 20 mentions']
     },
     {
-      id: 'college-road',
-      name: 'College Road',
-      score: 68,
-      sentiment: 'mixed',
-      x: 55, y: 45,
-      opinions: 54,
-      description: 'Mixed sentiment with concerns increasing after sunset.',
-      concerns: ['Poor evening lighting — 18 mentions', 'Quiet after 7 PM — 12 mentions'],
-      positives: ['Daytime student activity — 24 mentions', 'Maintained road — 14 mentions']
+      id: 'railway-station',
+      name: 'Ambala Cantt Railway Junction',
+      score: 76,
+      sentiment: 'positive',
+      x: 640, y: 310,
+      opinions: 62,
+      description: 'Premier 24/7 railway gateway with round-the-clock transport, tea stalls, and RPF beat posts.',
+      concerns: ['Chaotic auto-rickshaw parking — 19 mentions', 'Late night touts — 14 mentions'],
+      positives: ['Round-the-clock commuter movement — 38 mentions', 'Immediate public transport access — 31 mentions']
+    },
+    {
+      id: 'cloth-market',
+      name: 'Cloth Market (Ambala City)',
+      score: 81,
+      sentiment: 'positive',
+      x: 210, y: 170,
+      opinions: 56,
+      description: 'Famous wholesale textile market in Ambala City with high daytime family and women shopper presence.',
+      concerns: ['Narrow lanes for two-wheelers — 18 mentions'],
+      positives: ['Very safe daytime shopping vibe — 36 mentions', 'Merchant community surveillance — 24 mentions']
     },
     {
       id: 'bus-stand',
-      name: 'Bus Stand Crossing',
+      name: 'Jagadhri Road / Cantt Bus Stand',
       score: 42,
       sentiment: 'negative',
-      x: 70, y: 55,
+      x: 520, y: 330,
       opinions: 87,
-      description: 'Frequent concerns about lighting, traffic and crossing safety.',
-      concerns: ['Unsafe crossing — 32 mentions', 'Chaotic traffic — 27 mentions', 'Poor lighting — 21 mentions'],
-      positives: ['Nearby shops — 18 mentions']
+      description: 'Major transit crossing with heavy interstate bus traffic, poor zebra crossings, and dim lighting.',
+      concerns: ['Dangerous unregulated pedestrian crossing — 32 mentions', 'Chaotic interstate buses — 27 mentions', 'Dark underpass stretch — 21 mentions'],
+      positives: ['Dhabas open till 10:30 PM — 18 mentions']
     },
     {
-      id: 'residential',
-      name: 'Residential Road',
-      score: 61,
+      id: 'model-town',
+      name: 'Model Town (Ambala City)',
+      score: 68,
       sentiment: 'mixed',
-      x: 45, y: 70,
-      opinions: 45,
-      description: 'Low night-time activity mentioned frequently.',
-      concerns: ['Very quiet at night — 16 mentions', 'Few streetlights — 12 mentions'],
-      positives: ['Familiar neighborhood — 15 mentions', 'Low traffic — 10 mentions']
+      x: 270, y: 280,
+      opinions: 48,
+      description: 'Well-settled residential avenue with parks, but inner service lanes become dark after 9 PM.',
+      concerns: ['Dim lighting in back-lanes — 16 mentions', 'Quiet & deserted post 9:30 PM — 14 mentions'],
+      positives: ['Safe evening family walks — 26 mentions', 'Active resident community — 18 mentions']
+    },
+    {
+      id: 'sector-7',
+      name: 'Sector 7 / Urban Estate',
+      score: 54,
+      sentiment: 'mixed',
+      x: 350, y: 380,
+      opinions: 42,
+      description: 'Developing urban area with wide roads, but isolated vacant sectors and insufficient night illumination.',
+      concerns: ['Vacant plots feel isolated at night — 22 mentions', 'Inconsistent streetlights — 17 mentions'],
+      positives: ['Wide paved roads — 20 mentions', 'Peaceful daytime walkability — 15 mentions']
     }
   ],
 
-  // 30+ Community reviews - make them realistic, natural, and varied
+  // 30+ Community reviews with authentic Ambala context
   reviews: [
     {
       id: 1,
-      text: 'The road is crowded during the day and there are shops everywhere, so it feels pretty safe. I walk here almost every day without any concerns.',
+      text: 'Sadar Bazar in Ambala Cantt is crowded during the day and there are shops everywhere, so it feels very safe. I walk here almost every day without any concerns.',
       sentiment: 'positive',
       confidence: 94,
       aspects: [{ name: 'Crowd Density', sentiment: 'positive' }, { name: 'Public Activity', sentiment: 'positive' }],
       timePeriod: 'Daytime',
-      area: 'Main Market',
+      area: 'Sadar Bazar (Cantt)',
       memberId: 128
     },
     {
       id: 2,
-      text: 'There are barely any streetlights after the main crossing. Walking here at night doesn\'t feel safe at all. I always try to avoid this stretch after dark.',
+      text: 'There are barely any streetlights after the Jagadhri Road crossing near the bus stand. Walking here at night doesn\'t feel safe at all. I always try to avoid this stretch after dark.',
       sentiment: 'negative',
       confidence: 96,
       aspects: [{ name: 'Street Lighting', sentiment: 'negative' }, { name: 'Night Safety', sentiment: 'negative' }],
       timePeriod: 'Night',
-      area: 'Bus Stand Crossing',
+      area: 'Jagadhri Road / Bus Stand',
       memberId: 54
     },
     {

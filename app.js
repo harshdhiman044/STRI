@@ -167,16 +167,9 @@ function renderBreakdown(containerId, breakdown) {
 function renderMapHotspots(hotspots) {
     const svg = document.getElementById('mapSvg');
 
-    // Map coordinates: position hotspots on the SVG
-    const positions = [
-        { x: 280, y: 150 },   // Main Market
-        { x: 440, y: 220 },   // College Road
-        { x: 560, y: 280 },   // Bus Stand Crossing
-        { x: 360, y: 350 },   // Residential Road
-    ];
-
-    hotspots.forEach((h, i) => {
-        const pos = positions[i];
+    hotspots.forEach((h) => {
+        const posX = h.x;
+        const posY = h.y;
         const color = h.sentiment === 'positive' ? '#10b981' : h.sentiment === 'negative' ? '#ef4444' : '#f59e0b';
 
         const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
@@ -186,8 +179,8 @@ function renderMapHotspots(hotspots) {
 
         // Pulse ring
         const pulseCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        pulseCircle.setAttribute('cx', pos.x);
-        pulseCircle.setAttribute('cy', pos.y);
+        pulseCircle.setAttribute('cx', posX);
+        pulseCircle.setAttribute('cy', posY);
         pulseCircle.setAttribute('r', '18');
         pulseCircle.setAttribute('fill', color);
         pulseCircle.setAttribute('opacity', '0.2');
@@ -195,16 +188,16 @@ function renderMapHotspots(hotspots) {
 
         // Main dot
         const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        circle.setAttribute('cx', pos.x);
-        circle.setAttribute('cy', pos.y);
-        circle.setAttribute('r', '10');
+        circle.setAttribute('cx', posX);
+        circle.setAttribute('cy', posY);
+        circle.setAttribute('r', '11');
         circle.setAttribute('fill', color);
         circle.setAttribute('filter', 'url(#glow)');
 
         // Score text
         const scoreText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        scoreText.setAttribute('x', pos.x);
-        scoreText.setAttribute('y', pos.y + 4);
+        scoreText.setAttribute('x', posX);
+        scoreText.setAttribute('y', posY + 4);
         scoreText.setAttribute('text-anchor', 'middle');
         scoreText.setAttribute('fill', 'white');
         scoreText.setAttribute('font-size', '9');
@@ -214,12 +207,12 @@ function renderMapHotspots(hotspots) {
 
         // Label
         const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        label.setAttribute('x', pos.x);
-        label.setAttribute('y', pos.y + 28);
+        label.setAttribute('x', posX);
+        label.setAttribute('y', posY + 26);
         label.setAttribute('text-anchor', 'middle');
-        label.setAttribute('fill', '#1e293b');
-        label.setAttribute('font-size', '11');
-        label.setAttribute('font-weight', '600');
+        label.setAttribute('fill', '#0f172a');
+        label.setAttribute('font-size', '10.5');
+        label.setAttribute('font-weight', '700');
         label.setAttribute('font-family', 'Inter');
         label.textContent = h.name;
 
@@ -377,7 +370,7 @@ function renderInsightsPage(insight) {
 // =============================================
 
 function startAnalysis() {
-    const location = document.getElementById('locationInput').value || 'Mullana → Ambala Cantt';
+    const location = document.getElementById('locationInput').value || 'Ambala (Cantt & City Hubs)';
     document.getElementById('analyzeLocation').textContent = location;
 
     navigateTo('analyze');
