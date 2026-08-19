@@ -52,6 +52,10 @@
             </nav>
 
             <div class="nav-bottom">
+                <a href="#" class="nav-item nav-item-emergency" onclick="openEmergencyModal()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <span style="color:#ef4444; font-weight:600;">Emergency SOS</span>
+                </a>
                 <a href="#" class="nav-item" onclick="showToast('Settings panel coming soon', 'info')">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                     <span>Settings</span>
@@ -71,9 +75,16 @@
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
                 </button>
                 <div class="header-spacer"></div>
-                <div class="ai-status">
-                    <span class="ai-dot"></span>
-                    <span>AI Analysis Active</span>
+                <div class="header-actions">
+                    <button class="btn btn-emergency-header" onclick="openEmergencyModal()" title="Emergency SOS & Assistance">
+                        <span class="emergency-beacon"></span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 22 22 22 12 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <span>Emergency SOS</span>
+                    </button>
+                    <div class="ai-status">
+                        <span class="ai-dot"></span>
+                        <span>AI Analysis Active</span>
+                    </div>
                 </div>
             </div>
 
@@ -627,7 +638,174 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
                 <span>Voice</span>
             </a>
+            <a href="#" class="mobile-nav-item mobile-nav-sos" onclick="openEmergencyModal()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5"><polygon points="12 2 2 22 22 22 12 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span style="color:#ef4444; font-weight:700;">SOS</span>
+            </a>
         </nav>
+
+        <!-- Emergency SOS Modal -->
+        <div class="modal-overlay emergency-modal-overlay" id="emergencyModal" style="display:none;" onclick="closeEmergencyModal(event)">
+            <div class="modal emergency-modal" onclick="event.stopPropagation()">
+                <div class="emergency-modal-header">
+                    <div class="emergency-modal-title">
+                        <span class="emergency-pulsing-icon">🚨</span>
+                        <div>
+                            <h3>Emergency SOS & Immediate Assistance</h3>
+                            <p class="text-secondary text-sm">Rapid assistance protocol & safety toolsuite</p>
+                        </div>
+                    </div>
+                    <button class="modal-close" onclick="closeEmergencyModal()">×</button>
+                </div>
+                
+                <div class="modal-body emergency-modal-body">
+                    <!-- Siren / Alarm Active Banner -->
+                    <div class="siren-banner" id="sirenBanner" style="display:none;">
+                        <div class="siren-content">
+                            <span class="siren-flashing-light">⚠️</span>
+                            <div>
+                                <strong>LOUD SAFETY SIREN ACTIVE</strong>
+                                <p>Broadcasting high-decibel alert tone to deter threats</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-siren-stop" onclick="toggleSiren()">Stop Siren</button>
+                    </div>
+
+                    <!-- Quick Action Hero Grid -->
+                    <div class="emergency-quick-grid">
+                        <!-- Broadcast to Contacts -->
+                        <div class="emergency-action-card card-broadcast" onclick="triggerBroadcastAlert()">
+                            <div class="action-icon">📡</div>
+                            <div class="action-details">
+                                <h4>Simulate Contact Broadcast</h4>
+                                <p>Instant SMS & live location link to 3 trusted contacts</p>
+                            </div>
+                            <button class="btn btn-sm btn-danger action-btn" id="broadcastBtn">Dispatch Alert</button>
+                        </div>
+
+                        <!-- Loud Siren Toggle -->
+                        <div class="emergency-action-card card-siren" onclick="toggleSiren()">
+                            <div class="action-icon" id="sirenIcon">📢</div>
+                            <div class="action-details">
+                                <h4>Loud Safety Siren</h4>
+                                <p id="sirenStatusText">Synthesize deterrent alarm audio tone</p>
+                            </div>
+                            <button class="btn btn-sm btn-danger action-btn" id="sirenBtn">Start Siren</button>
+                        </div>
+
+                        <!-- Copy Live Location -->
+                        <div class="emergency-action-card card-location" onclick="copyEmergencyLocation()">
+                            <div class="action-icon">📍</div>
+                            <div class="action-details">
+                                <h4>Share Live GPS Location</h4>
+                                <p>Copy emergency link with coords & landmark to clipboard</p>
+                            </div>
+                            <button class="btn btn-sm btn-secondary action-btn">Copy / Share</button>
+                        </div>
+
+                        <!-- Discreet SOS -->
+                        <div class="emergency-action-card card-silent" onclick="triggerSilentAlert()">
+                            <div class="action-icon">🤫</div>
+                            <div class="action-details">
+                                <h4>Silent Discreet SOS</h4>
+                                <p>Silently registers distress alert without any screen flashes</p>
+                            </div>
+                            <button class="btn btn-sm btn-secondary action-btn">Silent Alert</button>
+                        </div>
+                    </div>
+
+                    <!-- Live Location Box -->
+                    <div class="emergency-location-card">
+                        <div class="location-card-header">
+                            <span class="pulse-dot-live"></span>
+                            <strong>Simulated GPS Location</strong>
+                            <span class="badge badge-positive">Accuracy: ±4m</span>
+                        </div>
+                        <div class="location-details-grid">
+                            <div>
+                                <span class="text-muted text-sm">Coordinates:</span>
+                                <p class="font-semibold" id="emergencyCoords">30.2445° N, 77.0421° E</p>
+                            </div>
+                            <div>
+                                <span class="text-muted text-sm">Nearest Landmark:</span>
+                                <p class="font-semibold">Mullana Bus Stand Post (350m)</p>
+                            </div>
+                            <div>
+                                <span class="text-muted text-sm">Battery Status:</span>
+                                <p class="font-semibold text-positive">88% (Charging)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Speed Dial Helplines -->
+                    <div class="emergency-helplines-section">
+                        <h4 class="section-subtitle-sm">📞 Direct Emergency Speed Dial</h4>
+                        <div class="helpline-chips-grid">
+                            <a href="tel:112" class="helpline-chip helpline-primary" onclick="logEmergencyCall('112')">
+                                <span class="helpline-number">112</span>
+                                <span class="helpline-name">National All-in-One</span>
+                            </a>
+                            <a href="tel:1091" class="helpline-chip helpline-women" onclick="logEmergencyCall('1091')">
+                                <span class="helpline-number">1091</span>
+                                <span class="helpline-name">Women Helpline (24/7)</span>
+                            </a>
+                            <a href="tel:7827170170" class="helpline-chip helpline-ncw" onclick="logEmergencyCall('7827170170')">
+                                <span class="helpline-number">7827170170</span>
+                                <span class="helpline-name">NCW Helpline</span>
+                            </a>
+                            <a href="tel:100" class="helpline-chip" onclick="logEmergencyCall('100')">
+                                <span class="helpline-number">100</span>
+                                <span class="helpline-name">Police Direct</span>
+                            </a>
+                            <a href="tel:108" class="helpline-chip" onclick="logEmergencyCall('108')">
+                                <span class="helpline-number">108</span>
+                                <span class="helpline-name">Ambulance</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Configured Emergency Contacts -->
+                    <div class="emergency-contacts-section">
+                        <h4 class="section-subtitle-sm">👥 Pre-Configured Emergency Contacts (Simulated)</h4>
+                        <div class="contacts-list" id="emergencyContactsList">
+                            <div class="contact-row">
+                                <div class="contact-avatar">PS</div>
+                                <div class="contact-info">
+                                    <strong>Priya Sharma</strong>
+                                    <span>Sister · +91 98765 43210</span>
+                                </div>
+                                <span class="contact-status status-ready" id="statusContact1">Ready</span>
+                            </div>
+                            <div class="contact-row">
+                                <div class="contact-avatar">AD</div>
+                                <div class="contact-info">
+                                    <strong>Anita Dhiman</strong>
+                                    <span>Mother · +91 98123 45678</span>
+                                </div>
+                                <span class="contact-status status-ready" id="statusContact2">Ready</span>
+                            </div>
+                            <div class="contact-row">
+                                <div class="contact-avatar">CS</div>
+                                <div class="contact-info">
+                                    <strong>Campus Security Desk</strong>
+                                    <span>Helpline · +91 99911 22334</span>
+                                </div>
+                                <span class="contact-status status-ready" id="statusContact3">Ready</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="disclaimer text-center mt-2">
+                        🛡️ <em>Demo Simulation Mode: In actual production deployment, real telephony & SMS dispatch gateways are invoked. No real external authorities are alerted during this hackathon demonstration.</em>
+                    </p>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeEmergencyModal()">Close Panel</button>
+                    <button class="btn btn-danger" onclick="triggerBroadcastAlert()">🚨 Quick Emergency Broadcast</button>
+                </div>
+            </div>
+        </div>
 
         <!-- Report Modal -->
         <div class="modal-overlay" id="reportModal" style="display:none;" onclick="closeReportModal(event)">

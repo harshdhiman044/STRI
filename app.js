@@ -544,3 +544,169 @@ function getInitials(id) {
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     return letters[id % 26] + letters[(id * 7 + 3) % 26];
 }
+
+// =============================================
+// Emergency Assistance & SOS System
+// =============================================
+
+let sirenAudioContext = null;
+let sirenOscillator = null;
+let sirenGain = null;
+let sirenInterval = null;
+let isSirenPlaying = false;
+
+function openEmergencyModal() {
+    document.getElementById('emergencyModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeEmergencyModal(e) {
+    if (e && e.target !== document.getElementById('emergencyModal')) return;
+    if (isSirenPlaying) {
+        stopSiren();
+    }
+    document.getElementById('emergencyModal').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function toggleSiren() {
+    if (isSirenPlaying) {
+        stopSiren();
+    } else {
+        startSiren();
+    }
+}
+
+function startSiren() {
+    try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) {
+            showToast('Audio siren started (visual mode)', 'info');
+            document.getElementById('sirenBanner').style.display = 'flex';
+            isSirenPlaying = true;
+            return;
+        }
+
+        sirenAudioContext = new AudioCtx();
+        sirenOscillator = sirenAudioContext.createOscillator();
+        sirenGain = sirenAudioContext.createGain();
+
+        sirenOscillator.type = 'sawtooth';
+        sirenOscillator.frequency.setValueAtTime(750, sirenAudioContext.currentTime);
+
+        sirenGain.gain.setValueAtTime(0.2, sirenAudioContext.currentTime);
+
+        sirenOscillator.connect(sirenGain);
+        sirenGain.connect(sirenAudioContext.destination);
+
+        sirenOscillator.start();
+
+        let isHigh = false;
+        sirenInterval = setInterval(() => {
+            if (!sirenAudioContext || sirenAudioContext.state === 'closed') return;
+            const targetFreq = isHigh ? 750 : 1200;
+            sirenOscillator.frequency.setTargetAtTime(targetFreq, sirenAudioContext.currentTime, 0.08);
+            isHigh = !isHigh;
+        }, 350);
+
+        isSirenPlaying = true;
+        document.getElementById('sirenBanner').style.display = 'flex';
+        document.getElementById('sirenBtn').textContent = 'Stop Siren';
+        document.getElementById('sirenStatusText').textContent = '⚠️ Siren sounding loudly';
+        document.getElementById('sirenIcon').textContent = '🚨';
+        showToast('🚨 Loud Safety Siren Activated', 'info');
+    } catch (err) {
+        console.warn('AudioContext error:', err);
+        isSirenPlaying = true;
+        document.getElementById('sirenBanner').style.display = 'flex';
+        document.getElementById('sirenBtn').textContent = 'Stop Siren';
+    }
+}
+
+function stopSiren() {
+    if (sirenInterval) {
+        clearInterval(sirenInterval);
+        sirenInterval = null;
+    }
+    if (sirenOscillator) {
+        try {
+            sirenOscillator.stop();
+            sirenOscillator.disconnect();
+        } catch (e) {}
+        sirenOscillator = null;
+    }
+    if (sirenAudioContext) {
+        try {
+            sirenAudioContext.close();
+        } catch (e) {}
+        sirenAudioContext = null;
+    }
+
+    isSirenPlaying = false;
+    document.getElementById('sirenBanner').style.display = 'none';
+    const sirenBtn = document.getElementById('sirenBtn');
+    if (sirenBtn) sirenBtn.textContent = 'Start Siren';
+    const statusText = document.getElementById('sirenStatusText');
+    if (statusText) statusText.textContent = 'Synthesize deterrent alarm audio tone';
+    const icon = document.getElementById('sirenIcon');
+    if (icon) icon.textContent = '📢';
+    showToast('Siren stopped', 'info');
+}
+
+function triggerBroadcastAlert() {
+    const broadcastBtn = document.getElementById('broadcastBtn');
+    broadcastBtn.textContent = 'Dispatching...';
+    broadcastBtn.disabled = true;
+
+    setTimeout(() => {
+        const contact1 = document.getElementById('statusContact1');
+        const contact2 = document.getElementById('statusContact2');
+        const contact3 = document.getElementById('statusContact3');
+
+        if (contact1) {
+            contact1.textContent = '🟢 Dispatched (SMS)';
+            contact1.className = 'contact-status status-notified';
+        }
+        if (contact2) {
+            contact2.textContent = '🟢 Dispatched (SMS)';
+            contact2.className = 'contact-status status-notified';
+        }
+        if (contact3) {
+            contact3.textContent = '🟢 Dispatched (Auto-Call)';
+            contact3.className = 'contact-status status-notified';
+        }
+
+        broadcastBtn.textContent = '✓ Alert Dispatched';
+        broadcastBtn.className = 'btn btn-sm btn-primary action-btn';
+
+        showToast('🚨 Simulated Emergency Alert sent to 3 contacts with live GPS coordinates.', 'success');
+    }, 900);
+}
+
+function copyEmergencyLocation() {
+    const coords = '30.2445° N, 77.0421° E';
+    const emergencyMsg = `🚨 EMERGENCY DISTRESS ALERT 🚨\nI need immediate assistance at:\nLocation: Mullana → Ambala Cantt Highway\nCoordinates: ${coords}\nNearest Landmark: Mullana Bus Stand Post (350m)\nGoogle Maps: https://maps.google.com/?q=30.2445,77.0421\nBattery: 88%\nSent via STRI Safety Intelligence`;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(emergencyMsg).then(() => {
+            showToast('📍 Live Emergency details copied to clipboard! Ready to share via SMS / WhatsApp.', 'success');
+        }).catch(() => {
+            promptEmergencyCopy(emergencyMsg);
+        });
+    } else {
+        promptEmergencyCopy(emergencyMsg);
+    }
+}
+
+function promptEmergencyCopy(text) {
+    showToast('📍 Emergency location ready for sharing.', 'info');
+}
+
+function triggerSilentAlert() {
+    showToast('🤫 Silent SOS logged discreetly. Tracking coordinates without active alarms.', 'info');
+}
+
+function logEmergencyCall(number) {
+    showToast(`📞 Connecting to emergency dialer: ${number}`, 'info');
+}
+

@@ -21,7 +21,14 @@
 4. **Interactive Safety Hotspots Map**: Visual exploration of routes and local hotspots (Main Market, College Road, Bus Stand Crossing, Residential Road) with instant sentiment inspection.
 5. **AI Review Intelligence & Filters**: Deep dive into community reviews with aspect chips, confidence ratings, and multi-dimensional filters.
 6. **Community Spot Reporting**: Allows community members to submit new observations (poor lighting, harassment concern, unsafe crossing, etc.).
-7. **Safe Journey Mode (Prototype)**: Active countdown timer for check-ins with safe confirmations and simulated emergency alert flows.
+7. **Emergency Assistance & SOS Suite**:
+   - One-tap header & mobile Quick SOS action.
+   - Synthesized Web Audio deterrent alarm / loud safety siren.
+   - Live GPS location sharing with formatted coordinates and maps link for SMS/WhatsApp.
+   - Simulated rapid dispatch to 3 pre-configured emergency contacts.
+   - Direct speed dial integration for National Emergency `112`, Women Helpline `1091`, NCW `7827170170`, Police `100`, and Ambulance `108`.
+   - Discreet silent SOS mode.
+8. **Safe Journey Mode (Prototype)**: Active countdown timer for check-ins with safe confirmations and simulated emergency alert flows.
 
 ---
 

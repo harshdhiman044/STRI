@@ -1834,3 +1834,380 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     margin-top: 12px;
   }
 }
+
+/* ==========================================================================
+   33. EMERGENCY SOS & ASSISTANCE STYLES
+   ========================================================================== */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-emergency-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-emergency-header:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.5);
+  background: #dc2626;
+}
+
+.emergency-beacon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffffff;
+  animation: beaconPulse 1.2s infinite ease-in-out;
+}
+
+@keyframes beaconPulse {
+  0% { transform: scale(0.9); opacity: 1; }
+  50% { transform: scale(1.6); opacity: 0.4; }
+  100% { transform: scale(0.9); opacity: 1; }
+}
+
+.nav-item-emergency {
+  background: rgba(239, 68, 68, 0.08) !important;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.nav-item-emergency:hover {
+  background: rgba(239, 68, 68, 0.16) !important;
+}
+
+.mobile-nav-sos {
+  color: #ef4444 !important;
+}
+
+/* Emergency Modal */
+.emergency-modal {
+  max-width: 620px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 2px solid rgba(239, 68, 68, 0.3);
+}
+
+.emergency-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+  border-bottom: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.emergency-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.emergency-pulsing-icon {
+  font-size: 1.8rem;
+  animation: beaconPulse 1.4s infinite;
+}
+
+.emergency-modal-title h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #991b1b;
+}
+
+.emergency-modal-body {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Siren Banner */
+.siren-banner {
+  background: #fee2e2;
+  border: 2px solid #ef4444;
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: sirenFlash 0.8s infinite alternate;
+}
+
+@keyframes sirenFlash {
+  from { background-color: #fee2e2; box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }
+  to { background-color: #fecaca; box-shadow: 0 0 25px rgba(239, 68, 68, 0.7); }
+}
+
+.siren-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.siren-flashing-light {
+  font-size: 1.5rem;
+  animation: spin 2s infinite linear;
+}
+
+.siren-content strong {
+  font-size: 0.9rem;
+  color: #991b1b;
+  display: block;
+}
+
+.siren-content p {
+  font-size: 0.78rem;
+  color: #b91c1c;
+}
+
+.btn-siren-stop {
+  background: #991b1b;
+  color: white;
+  padding: 6px 12px;
+  font-weight: 700;
+  border-radius: 8px;
+  font-size: 0.8rem;
+}
+
+/* Emergency Quick Grid */
+.emergency-quick-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.emergency-action-card {
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.emergency-action-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: #cbd5e1;
+}
+
+.card-broadcast {
+  background: #fef2f2;
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.card-broadcast:hover {
+  border-color: #ef4444;
+}
+
+.action-icon {
+  font-size: 1.5rem;
+}
+
+.action-details h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.action-details p {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.action-btn {
+  align-self: flex-start;
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+/* Location Card */
+.emergency-location-card {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px 18px;
+}
+
+.location-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 0.88rem;
+}
+
+.pulse-dot-live {
+  width: 8px;
+  height: 8px;
+  background: var(--positive);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+  animation: dotPulse 1.5s infinite;
+}
+
+.location-details-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.location-details-grid p {
+  font-size: 0.85rem;
+  margin-top: 2px;
+}
+
+/* Helplines */
+.section-subtitle-sm {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+  letter-spacing: 0.01em;
+}
+
+.helpline-chips-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.helpline-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1.5px solid var(--border);
+  padding: 8px 14px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  color: var(--text);
+}
+
+.helpline-chip:hover {
+  border-color: #ef4444;
+  background: #fff5f5;
+  transform: translateY(-1px);
+}
+
+.helpline-number {
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: #ef4444;
+}
+
+.helpline-name {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.helpline-primary {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: #fef2f2;
+}
+
+.helpline-women {
+  border-color: rgba(99, 102, 241, 0.4);
+  background: #eef2ff;
+}
+
+.helpline-women .helpline-number {
+  color: var(--accent);
+}
+
+/* Contacts */
+.contacts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.contact-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e0e7ff;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+
+.contact-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-info strong {
+  font-size: 0.85rem;
+}
+
+.contact-info span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.contact-status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.status-ready {
+  background: #f1f5f9;
+  color: var(--text-secondary);
+}
+
+.status-notified {
+  background: var(--positive-bg);
+  color: var(--positive);
+  animation: fadeIn 0.3s;
+}
+
+@media (max-width: 600px) {
+  .emergency-quick-grid {
+    grid-template-columns: 1fr;
+  }
+  .location-details-grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}
+
