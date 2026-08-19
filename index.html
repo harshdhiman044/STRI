@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -392,8 +393,32 @@
                     <p class="page-description">Community-reported safety sentiment across locations</p>
                 </div>
 
+                <div class="map-controls-bar animate-slide-up">
+                    <div class="map-controls-left">
+                        <button class="btn btn-gps-locate" onclick="getUserLiveLocation()" id="gpsLocateBtn">
+                            <span class="pulse-dot-gps"></span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="12 2 12 6 12 18 12 22"/><polygon points="2 12 6 12 18 12 22 12"/><circle cx="12" cy="12" r="3"/></svg>
+                            <span id="gpsBtnText">Track Live GPS</span>
+                        </button>
+                        <div class="map-view-toggles">
+                            <button class="map-toggle-btn active" id="btnStreetView" onclick="switchMapView('street')">🗺️ Interactive GPS Map</button>
+                            <button class="map-toggle-btn" id="btnRadarView" onclick="switchMapView('radar')">📡 Vector Radar</button>
+                        </div>
+                    </div>
+                    <div class="map-controls-right">
+                        <span class="badge badge-district">📍 Ambala District Lock (Haryana)</span>
+                        <span class="gps-status-indicator" id="gpsStatusText">GPS Ready</span>
+                    </div>
+                </div>
+
                 <div class="card card-lg map-wrapper animate-slide-up">
-                    <div class="map-container" id="mapContainer">
+                    <!-- Interactive Leaflet Street Tile Map -->
+                    <div class="interactive-leaflet-container" id="interactiveMapContainer">
+                        <div id="ambalaLeafletMap" style="width: 100%; height: 500px; border-radius: var(--radius); z-index: 1;"></div>
+                    </div>
+
+                    <!-- Vector Schematic Container -->
+                    <div class="map-container" id="vectorMapContainer" style="display: none;">
                         <svg class="map-svg" viewBox="0 0 850 520" id="mapSvg">
                             <!-- Background & Grid -->
                             <defs>
@@ -424,62 +449,50 @@
                             <text x="470" y="70" fill="#0284c7" font-size="9" font-family="Inter" font-weight="600" opacity="0.7" transform="rotate(75 470 70)">Tangri River</text>
 
                             <!-- City Zones -->
-                            <!-- Ambala City Sector Box -->
                             <rect x="80" y="70" width="310" height="380" rx="18" fill="url(#cityGrad)" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.85"/>
                             <text x="95" y="96" fill="#0369a1" font-size="12" font-family="Inter" font-weight="800" letter-spacing="0.05em">AMBALA CITY SECTOR</text>
 
-                            <!-- Ambala Cantt Sector Box -->
                             <rect x="460" y="70" width="320" height="380" rx="18" fill="url(#canttGrad)" stroke="#818cf8" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.85"/>
                             <text x="475" y="96" fill="#4338ca" font-size="12" font-family="Inter" font-weight="800" letter-spacing="0.05em">AMBALA CANTT SECTOR</text>
 
-                            <!-- Railway Track (Double Line) -->
+                            <!-- Railway Track -->
                             <path d="M 40 460 L 820 180" stroke="#475569" stroke-width="4" fill="none" opacity="0.4"/>
                             <path d="M 40 460 L 820 180" stroke="#ffffff" stroke-width="2" fill="none" stroke-dasharray="6,6" opacity="0.9"/>
                             <text x="750" y="195" fill="#475569" font-size="9" font-family="Inter" font-weight="600">Northern Railway Main Line</text>
 
-                            <!-- Major Highways & Arteries -->
-                            <!-- GT Road / NH-44 (Connecting Delhi - Ambala - Chandigarh) -->
+                            <!-- Highways -->
                             <path d="M 440 520 L 440 340 Q 420 220 380 0" stroke="#cbd5e1" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.7"/>
                             <path d="M 440 520 L 440 340 Q 420 220 380 0" stroke="#64748b" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="8,6"/>
                             <text x="450" y="490" fill="#475569" font-size="10" font-family="Inter" font-weight="700">NH-44 (GT Road to Delhi)</text>
                             <text x="390" y="25" fill="#475569" font-size="10" font-family="Inter" font-weight="700">NH-44 (To Chandigarh)</text>
 
-                            <!-- Ambala Twin-City Connector (City - Cantt Link Road) -->
                             <path d="M 120 230 C 260 230 450 250 740 240" stroke="#cbd5e1" stroke-width="14" fill="none" stroke-linecap="round" opacity="0.7"/>
                             <path d="M 120 230 C 260 230 450 250 740 240" stroke="#94a3b8" stroke-width="2" fill="none" stroke-dasharray="8,6"/>
                             <text x="310" y="222" fill="#6366f1" font-size="9.5" font-family="Inter" font-weight="700">Ambala Cantt - City Link Corridor</text>
 
-                            <!-- Jagadhri Road (NH-344 heading Southeast) -->
                             <path d="M 520 330 Q 640 390 820 440" stroke="#cbd5e1" stroke-width="12" fill="none" stroke-linecap="round" opacity="0.65"/>
                             <path d="M 520 330 Q 640 390 820 440" stroke="#94a3b8" stroke-width="2" fill="none" stroke-dasharray="6,4"/>
                             <text x="710" y="415" fill="#64748b" font-size="9.5" font-family="Inter" font-weight="600">NH-344 (Jagadhri Rd)</text>
 
-                            <!-- Ambala-Hisar Road (NH-65 heading Southwest) -->
                             <path d="M 210 230 Q 150 360 40 420" stroke="#cbd5e1" stroke-width="10" fill="none" stroke-linecap="round" opacity="0.6"/>
                             <text x="60" y="390" fill="#64748b" font-size="9" font-family="Inter" font-weight="600">NH-65 (Hisar Rd)</text>
 
-                            <!-- Secondary Roads Grid -->
                             <path d="M 210 100 L 210 390" stroke="#e2e8f0" stroke-width="6" fill="none" opacity="0.8"/>
                             <path d="M 120 170 L 370 170" stroke="#e2e8f0" stroke-width="6" fill="none" opacity="0.8"/>
                             <path d="M 580 100 L 580 390" stroke="#e2e8f0" stroke-width="6" fill="none" opacity="0.8"/>
                             <path d="M 480 310 L 760 310" stroke="#e2e8f0" stroke-width="6" fill="none" opacity="0.8"/>
 
-                            <!-- Map Title & Compass -->
                             <rect x="24" y="20" width="270" height="34" rx="8" fill="#ffffff" stroke="#e2e8f0" opacity="0.95"/>
                             <text x="36" y="42" fill="#0f172a" font-size="11.5" font-family="Inter" font-weight="800">AMBALA SAFETY MAP (CANTT & CITY)</text>
 
-                            <!-- Compass Rose -->
                             <g transform="translate(805, 35)">
                                 <circle cx="0" cy="0" r="14" fill="#ffffff" stroke="#cbd5e1"/>
                                 <polygon points="0,-10 3,0 -3,0" fill="#ef4444"/>
                                 <polygon points="0,10 3,0 -3,0" fill="#94a3b8"/>
                                 <text x="0" y="-13" fill="#ef4444" font-size="8" font-family="Inter" font-weight="800" text-anchor="middle">N</text>
                             </g>
-
-                            <!-- Hotspot nodes will be rendered dynamically by JavaScript -->
                         </svg>
 
-                        <!-- Map Legend -->
                         <div class="map-legend">
                             <h4>Safety Sentiment</h4>
                             <div class="legend-item"><span class="legend-dot dot-positive"></span> Positive</div>
@@ -501,7 +514,13 @@
                         <p id="hotspotDescription"></p>
                         <div id="hotspotConcerns"></div>
                         <div id="hotspotPositives"></div>
-                        <button class="btn btn-secondary mt-2" onclick="navigateTo('community')">View community opinions →</button>
+                        <div class="hotspot-action-buttons mt-3">
+                            <button class="btn btn-secondary" onclick="navigateTo('community')">View community opinions →</button>
+                            <a id="gmapsLink" href="https://maps.google.com" target="_blank" class="btn btn-primary btn-gmaps">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                Open in Google Maps
+                            </a>
+                        </div>
                     </div>
                 </div>
 
@@ -887,10 +906,12 @@
             </div>
         </div>
 
-        <!-- Toast Container -->
-        <div class="toast-container" id="toastContainer"></div>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
     </div>
 
+    <!-- Leaflet JS for GPS & Interactive Map -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="data.js"></script>
     <script src="app.js"></script>
 </body>

@@ -15,6 +15,7 @@ function initApp() {
     renderBreakdown('breakdownBars', D.indexBreakdown);
     renderBreakdown('insightBreakdown', D.indexBreakdown);
     renderMapHotspots(D.hotspots);
+    initAmbalaLeafletMap();
     renderHotspotGrid(D.hotspots);
     renderAllReviews(D.reviews);
     renderInsightsPage(D.aiInsight);
@@ -45,119 +46,253 @@ function navigateTo(page) {
         el.offsetHeight; // trigger reflow
         el.style.animation = '';
     });
-}
 
-function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('sidebar-open');
-}
-
-// =============================================
-// Greeting
-// =============================================
-
-function updateGreeting() {
-    const hour = new Date().getHours();
-    let greeting = 'Good morning 👋';
-    if (hour >= 12 && hour < 17) greeting = 'Good afternoon 👋';
-    else if (hour >= 17 && hour < 21) greeting = 'Good evening 👋';
-    else if (hour >= 21 || hour < 5) greeting = 'Good night 👋';
-    document.querySelector('.greeting').textContent = greeting;
+    if (page === 'map') {
+        setTimeout(() => {
+            if (ambalaMap) {
+                ambalaMap.invalidateSize();
+            }
+        }, 200);
+    }
 }
 
 // =============================================
-// Safety Aspects
+// Interactive Leaflet & GPS System (Ambala District)
 // =============================================
 
-function renderAspects(aspects) {
-    const grid = document.getElementById('aspectsGrid');
-    grid.innerHTML = aspects.map(a => `
-        <div class="aspect-card aspect-${a.sentiment}" onclick="filterReviews('${a.id}'); navigateTo('community');">
-            <div class="aspect-icon">${a.icon}</div>
-            <h4 class="aspect-name">${a.name}</h4>
-            <span class="badge badge-${a.sentiment}">${capitalize(a.sentiment)}</span>
-            <p class="aspect-mentions">${a.mentions} mentions</p>
-        </div>
-    `).join('');
-}
+let ambalaMap = null;
+let userGpsMarker = null;
+let userGpsAccuracyCircle = null;
+let leafletMarkers = {};
 
-// =============================================
-// Time-Based Safety
-// =============================================
+function initAmbalaLeafletMap() {
+    if (typeof L === 'undefined') return;
+    const mapElement = document.getElementById('ambalaLeafletMap');
+    if (!mapElement || ambalaMap) return;
 
-function renderTimeSafety(times, explanation) {
-    const grid = document.getElementById('timeGrid');
-    grid.innerHTML = times.map(t => `
-        <div class="time-card time-${t.sentiment}">
-            <div class="time-icon">${t.icon}</div>
-            <h4 class="time-period">${t.period}</h4>
-            <p class="time-range">${t.time}</p>
-            <div class="time-score time-score-${t.sentiment}">
-                <span class="time-score-value">${t.score}</span>
-                <span class="time-score-max">/ 100</span>
-            </div>
-            <p class="time-description">${t.description}</p>
-        </div>
-    `).join('');
-    document.getElementById('timeExplanationText').textContent = explanation;
-}
+    const D = window.STRI_DATA;
+    const bounds = D.ambalaBounds;
 
-// =============================================
-// Dashboard AI Insight
-// =============================================
+    const southWest = L.latLng(bounds.bounds[0][0], bounds.bounds[0][1]);
+    const northEast = L.latLng(bounds.bounds[1][0], bounds.bounds[1][1]);
+    const ambalaDistrictBounds = L.latLngBounds(southWest, northEast);
 
-function renderDashboardInsight(insight) {
-    document.getElementById('insightSummary').textContent = insight.summary;
-    document.getElementById('insightConcerns').innerHTML = insight.concerns.slice(0, 3).map(c => `<li>${c}</li>`).join('');
-    document.getElementById('insightPositives').innerHTML = insight.positives.slice(0, 3).map(p => `<li>${p}</li>`).join('');
-}
+    ambalaMap = L.map('ambalaLeafletMap', {
+        center: bounds.center,
+        zoom: bounds.zoom,
+        minZoom: bounds.minZoom,
+        maxZoom: bounds.maxZoom,
+        maxBounds: ambalaDistrictBounds,
+        maxBoundsViscosity: 1.0,
+        attributionControl: true
+    });
 
-// =============================================
-// Review Intelligence (Analyze page)
-// =============================================
+    // Clean modern vector tile layer (CartoDB Voyager) with OSM fallback
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 19
+    }).addTo(ambalaMap);
 
-function renderReviewIntelligence(reviews) {
-    const container = document.getElementById('reviewIntelligence');
-    container.innerHTML = reviews.map((r, i) => `
-        <div class="review-intel-card animate-slide-up stagger-${i + 1}">
-            <div class="review-intel-header">
-                <span class="review-number">REVIEW ${String(i + 1).padStart(2, '0')}</span>
-                <span class="badge badge-${r.sentiment}">${capitalize(r.sentiment)}</span>
-            </div>
-            <blockquote class="review-text">"${r.text}"</blockquote>
-            <div class="review-aspects">
-                <span class="review-aspects-label">AI detected:</span>
-                ${r.aspects.map(a => `
-                    <span class="aspect-tag aspect-tag-${a.sentiment}">
-                        ${a.name} — ${capitalize(a.sentiment)}
-                    </span>
-                `).join('')}
-            </div>
-            <div class="review-meta">
-                <span class="review-confidence">AI Confidence: <strong>${r.confidence}%</strong></span>
-            </div>
-        </div>
-    `).join('');
-}
+    // Ambala District boundary guide
+    const districtBoundaryPolygon = L.polygon([
+        [30.5500, 76.6500],
+        [30.5800, 77.0500],
+        [30.4500, 77.1800],
+        [30.2200, 77.1000],
+        [30.1500, 76.8500],
+        [30.2200, 76.6000],
+        [30.4000, 76.6200]
+    ], {
+        color: '#6366f1',
+        weight: 2,
+        dashArray: '5, 8',
+        fillColor: '#6366f1',
+        fillOpacity: 0.03
+    }).addTo(ambalaMap);
 
-// =============================================
-// Breakdown Bars
-// =============================================
+    districtBoundaryPolygon.bindTooltip('Ambala District Boundary', { permanent: false, direction: 'center' });
 
-function renderBreakdown(containerId, breakdown) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = breakdown.map(b => {
-        const isPositive = b.impact > 0;
-        const width = Math.abs(b.impact) * 3;
-        return `
-            <div class="breakdown-row">
-                <span class="breakdown-factor">${b.factor}</span>
-                <div class="breakdown-bar-container">
-                    <div class="breakdown-bar ${isPositive ? 'bar-positive' : 'bar-negative'}" style="width: ${width}%"></div>
+    // Render each hotspot as a custom sentiment pin
+    D.hotspots.forEach(h => {
+        const sentimentClass = h.sentiment === 'positive' ? 'stri-marker-positive' : h.sentiment === 'negative' ? 'stri-marker-negative' : 'stri-marker-mixed';
+        
+        const customIcon = L.divIcon({
+            className: 'stri-leaflet-marker',
+            html: `
+                <div class="stri-marker-badge ${sentimentClass}">
+                    <span>${h.score}</span>
                 </div>
-                <span class="breakdown-impact ${isPositive ? 'text-positive' : 'text-negative'}">${isPositive ? '+' : ''}${b.impact}</span>
+                <div class="stri-marker-tip"></div>
+            `,
+            iconSize: [36, 30],
+            iconAnchor: [18, 30],
+            popupAnchor: [0, -28]
+        });
+
+        const marker = L.marker([h.lat, h.lng], { icon: customIcon }).addTo(ambalaMap);
+        leafletMarkers[h.id] = marker;
+
+        const popupContent = `
+            <div style="font-family: Inter, sans-serif; min-width: 180px; padding: 4px;">
+                <div style="font-weight: 800; font-size: 13px; color: #0f172a; margin-bottom: 2px;">${h.name}</div>
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                    <span style="font-weight: 800; font-size: 15px; color: ${h.sentiment === 'positive' ? '#10b981' : h.sentiment === 'negative' ? '#ef4444' : '#f59e0b'};">${h.score}/100</span>
+                    <span style="font-size: 11px; color: #64748b;">${h.opinions} opinions</span>
+                </div>
+                <div style="font-size: 11px; color: #475569; margin-bottom: 8px;">${h.description}</div>
+                <div style="display:flex; gap: 4px;">
+                    <button onclick="showHotspot('${h.id}')" style="background:#6366f1; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:10px; font-weight:700; cursor:pointer;">Inspect</button>
+                    <a href="https://www.google.com/maps/search/?api=1&query=${h.lat},${h.lng}" target="_blank" style="background:#0f172a; color:white; text-decoration:none; padding:4px 8px; border-radius:6px; font-size:10px; font-weight:700;">Google Maps ↗</a>
+                </div>
             </div>
         `;
-    }).join('');
+
+        marker.bindPopup(popupContent);
+
+        marker.on('click', () => {
+            showHotspot(h.id);
+        });
+
+        // Pulsing safety radius circle
+        const circleColor = h.sentiment === 'positive' ? '#10b981' : h.sentiment === 'negative' ? '#ef4444' : '#f59e0b';
+        L.circle([h.lat, h.lng], {
+            color: circleColor,
+            fillColor: circleColor,
+            fillOpacity: 0.1,
+            radius: 400
+        }).addTo(ambalaMap);
+    });
+}
+
+function getUserLiveLocation() {
+    const locateBtn = document.getElementById('gpsLocateBtn');
+    const btnText = document.getElementById('gpsBtnText');
+    const statusText = document.getElementById('gpsStatusText');
+
+    if (!navigator.geolocation) {
+        showToast('Geolocation is not supported by your browser.', 'info');
+        return;
+    }
+
+    btnText.textContent = 'Acquiring GPS...';
+    statusText.textContent = 'Locating...';
+
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            const accuracy = Math.round(position.coords.accuracy || 12);
+
+            btnText.textContent = 'Live GPS Active';
+            statusText.textContent = `Live GPS: ±${accuracy}m accuracy`;
+
+            // Update emergency panel coordinates
+            const emergencyCoords = document.getElementById('emergencyCoords');
+            if (emergencyCoords) {
+                emergencyCoords.textContent = `${lat.toFixed(4)}° N, ${lng.toFixed(4)}° E`;
+            }
+
+            if (!ambalaMap) {
+                initAmbalaLeafletMap();
+            }
+
+            if (ambalaMap) {
+                if (userGpsMarker) {
+                    ambalaMap.removeLayer(userGpsMarker);
+                }
+                if (userGpsAccuracyCircle) {
+                    ambalaMap.removeLayer(userGpsAccuracyCircle);
+                }
+
+                // Add live user GPS marker
+                const userIcon = L.divIcon({
+                    className: 'stri-gps-user-wrapper',
+                    html: '<div class="stri-gps-user-marker"></div>',
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
+                });
+
+                userGpsMarker = L.marker([lat, lng], { icon: userIcon }).addTo(ambalaMap);
+                userGpsMarker.bindPopup(`
+                    <div style="font-family: Inter, sans-serif; font-size: 12px; padding: 4px;">
+                        <strong style="color: #3b82f6;">📍 Your Current Live Location</strong><br>
+                        <span>Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}</span><br>
+                        <span style="font-size: 10px; color: #64748b;">GPS Accuracy: ±${accuracy}m</span>
+                    </div>
+                `).openPopup();
+
+                userGpsAccuracyCircle = L.circle([lat, lng], {
+                    radius: accuracy,
+                    color: '#3b82f6',
+                    fillColor: '#3b82f6',
+                    fillOpacity: 0.15,
+                    weight: 1.5
+                }).addTo(ambalaMap);
+
+                // Check distance to Ambala center
+                const D = window.STRI_DATA;
+                const ambalaCenter = D.ambalaBounds.center;
+                const distToAmbala = calculateDistanceKm(lat, lng, ambalaCenter[0], ambalaCenter[1]);
+
+                if (distToAmbala < 35) {
+                    ambalaMap.setView([lat, lng], 14);
+                    showToast(`📍 Live GPS pinned in Ambala District (±${accuracy}m accuracy).`, 'success');
+                } else {
+                    ambalaMap.setView(ambalaCenter, 12);
+                    showToast(`📍 GPS captured (${lat.toFixed(4)}°N, ${lng.toFixed(4)}°E). Ambala District safety boundary focused.`, 'info');
+                }
+            }
+        },
+        (error) => {
+            console.warn('GPS Error:', error);
+            btnText.textContent = 'Track Live GPS';
+            statusText.textContent = 'Simulated Ambala GPS';
+            showToast('Simulated GPS Active: Centered on Ambala Cantt & City.', 'info');
+
+            // Default simulate to Ambala Cantt
+            if (ambalaMap) {
+                ambalaMap.setView([30.3448, 76.8415], 13);
+            }
+        },
+        { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
+    );
+}
+
+function calculateDistanceKm(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Earth radius in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return Math.round(R * c);
+}
+
+function switchMapView(mode) {
+    const streetContainer = document.getElementById('interactiveMapContainer');
+    const radarContainer = document.getElementById('vectorMapContainer');
+    const btnStreet = document.getElementById('btnStreetView');
+    const btnRadar = document.getElementById('btnRadarView');
+
+    if (mode === 'street') {
+        streetContainer.style.display = 'block';
+        radarContainer.style.display = 'none';
+        btnStreet.classList.add('active');
+        btnRadar.classList.remove('active');
+
+        if (!ambalaMap) {
+            initAmbalaLeafletMap();
+        } else {
+            setTimeout(() => ambalaMap.invalidateSize(), 150);
+        }
+    } else {
+        streetContainer.style.display = 'none';
+        radarContainer.style.display = 'block';
+        btnStreet.classList.remove('active');
+        btnRadar.classList.add('active');
+    }
 }
 
 // =============================================
@@ -166,6 +301,7 @@ function renderBreakdown(containerId, breakdown) {
 
 function renderMapHotspots(hotspots) {
     const svg = document.getElementById('mapSvg');
+    if (!svg) return;
 
     hotspots.forEach((h) => {
         const posX = h.x;
@@ -250,6 +386,18 @@ function showHotspot(id) {
         <h4 class="mt-2 text-positive">Positive signals</h4>
         <ul class="hotspot-list">${h.positives.map(p => `<li>🟢 ${p}</li>`).join('')}</ul>
     ` : '';
+
+    const gmapsLink = document.getElementById('gmapsLink');
+    if (gmapsLink) {
+        gmapsLink.href = `https://www.google.com/maps/search/?api=1&query=${h.lat},${h.lng}`;
+    }
+
+    if (ambalaMap && h.lat && h.lng) {
+        ambalaMap.setView([h.lat, h.lng], 14, { animate: true });
+        if (leafletMarkers[h.id]) {
+            leafletMarkers[h.id].openPopup();
+        }
+    }
 
     detail.classList.add('animate-slide-up');
 }

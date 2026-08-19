@@ -18,7 +18,11 @@
 1. **Aspect-Based Sentiment Analysis**: Extracts granular safety factors (Street Lighting, Crowd Density, Night Safety, Road Condition, Traffic, Walkability, Crossing Safety, Public Activity) and computes per-aspect sentiments.
 2. **STRI Safety Sentiment Index**: Aggregated location safety score (e.g., 72/100) with historical trend tracking and mathematical impact breakdown.
 3. **Time-Based Sentiment Analysis**: Understands how perceived safety changes throughout the day (Morning, Afternoon, Evening, Night) and pinpoints when safety sentiment drops.
-4. **Interactive Ambala Safety Hotspots Map**: Visual exploration of Ambala (Ambala Cantt & Ambala City) safety hotspots (Sadar Bazar, Cloth Market, Cantt Railway Junction, Jagadhri Road Bus Stand, Model Town, Sector 7 Urban Estate) with instant sentiment inspection.
+4. **Interactive Ambala GPS Map & Google Maps Integration**:
+   - Live browser GPS tracking with real-time location pinning (`navigator.geolocation`) and accuracy circle.
+   - Bounded specifically to **Ambala District, Haryana** with strict district boundary lock and coordinate verification.
+   - Dual-mode visualization: **Interactive Street Map (Leaflet / OSM & Google Maps style tiles)** + **Vector Schematic Radar**.
+   - Custom STRI sentiment pins (🟢 Green, 🟡 Mixed, 🔴 Negative) with one-click direct Google Maps navigation routing.
 5. **AI Review Intelligence & Filters**: Deep dive into community reviews with aspect chips, confidence ratings, and multi-dimensional filters.
 6. **Community Spot Reporting**: Allows community members to submit new observations (poor lighting, harassment concern, unsafe crossing, etc.).
 7. **Emergency Assistance & SOS Suite**:

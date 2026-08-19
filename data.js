@@ -78,13 +78,27 @@ window.STRI_DATA = {
   ],
   timeSafetyExplanation: 'Community sentiment across Ambala drops sharply after 8 PM, driven by reduced pedestrian presence on connecting roads and inadequate lighting around underpasses and bus terminals.',
 
-  // Ambala Map hotspots
+  // Ambala District GPS Bounds & Hotspots
+  ambalaBounds: {
+    center: [30.3600, 76.8100],
+    zoom: 12,
+    minZoom: 10,
+    maxZoom: 18,
+    bounds: [
+      [30.1000, 76.5000], // Southwest
+      [30.6500, 77.2500]  // Northeast (Ambala District Boundary)
+    ]
+  },
+
+  // Ambala Map hotspots with exact GPS Coordinates
   hotspots: [
     {
       id: 'sadar-bazar',
       name: 'Sadar Bazar (Ambala Cantt)',
       score: 86,
       sentiment: 'positive',
+      lat: 30.3448,
+      lng: 76.8415,
       x: 580, y: 190,
       opinions: 68,
       description: 'Major bustling commercial hub in Ambala Cantt with vibrant shops and constant police patrol.',
@@ -96,6 +110,8 @@ window.STRI_DATA = {
       name: 'Ambala Cantt Railway Junction',
       score: 76,
       sentiment: 'positive',
+      lat: 30.3308,
+      lng: 76.8402,
       x: 640, y: 310,
       opinions: 62,
       description: 'Premier 24/7 railway gateway with round-the-clock transport, tea stalls, and RPF beat posts.',
@@ -107,6 +123,8 @@ window.STRI_DATA = {
       name: 'Cloth Market (Ambala City)',
       score: 81,
       sentiment: 'positive',
+      lat: 30.3804,
+      lng: 76.7725,
       x: 210, y: 170,
       opinions: 56,
       description: 'Famous wholesale textile market in Ambala City with high daytime family and women shopper presence.',
@@ -118,6 +136,8 @@ window.STRI_DATA = {
       name: 'Jagadhri Road / Cantt Bus Stand',
       score: 42,
       sentiment: 'negative',
+      lat: 30.3345,
+      lng: 76.8370,
       x: 520, y: 330,
       opinions: 87,
       description: 'Major transit crossing with heavy interstate bus traffic, poor zebra crossings, and dim lighting.',
@@ -129,6 +149,8 @@ window.STRI_DATA = {
       name: 'Model Town (Ambala City)',
       score: 68,
       sentiment: 'mixed',
+      lat: 30.3701,
+      lng: 76.7820,
       x: 270, y: 280,
       opinions: 48,
       description: 'Well-settled residential avenue with parks, but inner service lanes become dark after 9 PM.',
@@ -140,6 +162,8 @@ window.STRI_DATA = {
       name: 'Sector 7 / Urban Estate',
       score: 54,
       sentiment: 'mixed',
+      lat: 30.3580,
+      lng: 76.8040,
       x: 350, y: 380,
       opinions: 42,
       description: 'Developing urban area with wide roads, but isolated vacant sectors and insufficient night illumination.',

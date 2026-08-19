@@ -2211,3 +2211,158 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   }
 }
 
+/* ==========================================================================
+   34. GPS & INTERACTIVE MAP STYLES
+   ========================================================================== */
+.map-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.map-controls-left, .map-controls-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-gps-locate {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.15);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-gps-locate:hover {
+  background: var(--accent-light);
+  transform: translateY(-1px);
+}
+
+.pulse-dot-gps {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3b82f6;
+  animation: beaconPulse 1.2s infinite ease-in-out;
+}
+
+.map-view-toggles {
+  display: flex;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.map-toggle-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.map-toggle-btn.active {
+  background: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 1px 4px rgba(99, 102, 241, 0.3);
+}
+
+.badge-district {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  font-size: 0.75rem;
+}
+
+.gps-status-indicator {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.interactive-leaflet-container {
+  width: 100%;
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Custom Marker Styling */
+.stri-leaflet-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.stri-marker-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 8px;
+  border-radius: 12px;
+  color: white;
+  font-weight: 800;
+  font-size: 11px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+  border: 2px solid white;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+
+.stri-marker-positive { background: #10b981; }
+.stri-marker-mixed { background: #f59e0b; }
+.stri-marker-negative { background: #ef4444; }
+
+.stri-marker-tip {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #1e293b;
+  margin-top: -1px;
+}
+
+.stri-gps-user-marker {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.35);
+  animation: beaconPulse 1.5s infinite;
+}
+
+.hotspot-action-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-gmaps {
+  background: #1e293b !important;
+  color: #ffffff !important;
+}
+
+.btn-gmaps:hover {
+  background: #0f172a !important;
+}
+
+
