@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="STRI — AI-Powered Safety Intelligence. Turning community voices into safer roads through aspect-based sentiment analysis.">
+    <title>STRI — AI-Powered Safety Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-layout" id="app">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <rect width="32" height="32" rx="8" fill="#6366f1"/>
+                        <path d="M16 6L22 10V22L16 26L10 22V10L16 6Z" fill="white" opacity="0.9"/>
+                        <path d="M16 10L19 12V20L16 22L13 20V12L16 10Z" fill="#6366f1"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="brand-name">STRI</h1>
+                    <span class="sidebar-badge">🛡️ AI Safety Intelligence</span>
+                </div>
+            </div>
+
+            <nav class="nav-section">
+                <a href="#" class="nav-item active" data-page="dashboard" onclick="navigateTo('dashboard')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-page="analyze" onclick="navigateTo('analyze')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                    <span>Analyze</span>
+                </a>
+                <a href="#" class="nav-item" data-page="map" onclick="navigateTo('map')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+                    <span>Safety Map</span>
+                </a>
+                <a href="#" class="nav-item" data-page="community" onclick="navigateTo('community')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <span>Community Voice</span>
+                </a>
+                <a href="#" class="nav-item" data-page="insights" onclick="navigateTo('insights')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    <span>Insights</span>
+                </a>
+            </nav>
+
+            <div class="nav-bottom">
+                <a href="#" class="nav-item" onclick="showToast('Settings panel coming soon', 'info')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="nav-item" onclick="showToast('Help center coming soon', 'info')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    <span>Help</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Header Bar -->
+            <div class="header-bar">
+                <button class="mobile-menu-btn" id="menuBtn" onclick="toggleSidebar()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+                <div class="header-spacer"></div>
+                <div class="ai-status">
+                    <span class="ai-dot"></span>
+                    <span>AI Analysis Active</span>
+                </div>
+            </div>
+
+            <!-- ==================== DASHBOARD PAGE ==================== -->
+            <div class="page active" id="page-dashboard">
+                <div class="page-header animate-fade-in">
+                    <h2 class="greeting">Good morning 👋</h2>
+                    <h3 class="page-subtitle">Community-powered safety intelligence</h3>
+                    <p class="page-description">Understand what people experience before you travel.</p>
+                </div>
+
+                <!-- Location Analysis Card -->
+                <div class="card card-lg location-card animate-slide-up stagger-1">
+                    <div class="card-icon-header">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                        <h3>Analyze a road or location</h3>
+                    </div>
+                    <div class="search-container">
+                        <div class="search-input-wrapper">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            <input type="text" class="search-input" id="locationInput" placeholder="Enter road, area or destination" value="Mullana → Ambala Cantt">
+                        </div>
+                        <button class="btn btn-primary btn-analyze" onclick="startAnalysis()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                            Analyze Safety
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hero Pipeline -->
+                <div class="hero-pipeline animate-slide-up stagger-2" id="heroPipeline">
+                    <div class="pipeline-node">
+                        <div class="pipeline-number" id="heroOpinions">248</div>
+                        <div class="pipeline-label">Opinions</div>
+                    </div>
+                    <div class="pipeline-connector">
+                        <svg width="40" height="20" viewBox="0 0 40 20"><path d="M0 10 L30 10 L25 5 M30 10 L25 15" stroke="#6366f1" stroke-width="2" fill="none" opacity="0.5"/></svg>
+                    </div>
+                    <div class="pipeline-node">
+                        <div class="pipeline-number">17</div>
+                        <div class="pipeline-label">Safety Patterns</div>
+                    </div>
+                    <div class="pipeline-connector">
+                        <svg width="40" height="20" viewBox="0 0 40 20"><path d="M0 10 L30 10 L25 5 M30 10 L25 15" stroke="#6366f1" stroke-width="2" fill="none" opacity="0.5"/></svg>
+                    </div>
+                    <div class="pipeline-node">
+                        <div class="pipeline-number">8</div>
+                        <div class="pipeline-label">Safety Aspects</div>
+                    </div>
+                    <div class="pipeline-connector">
+                        <svg width="40" height="20" viewBox="0 0 40 20"><path d="M0 10 L30 10 L25 5 M30 10 L25 15" stroke="#6366f1" stroke-width="2" fill="none" opacity="0.5"/></svg>
+                    </div>
+                    <div class="pipeline-node pipeline-node-accent">
+                        <div class="pipeline-number" id="heroScore">72<span class="pipeline-max">/100</span></div>
+                        <div class="pipeline-label">STRI Safety Sentiment</div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <!-- Safety Sentiment Index -->
+                    <div class="card card-lg safety-index-card animate-slide-up stagger-3" id="safetyIndexCard">
+                        <div class="card-header-row">
+                            <h3 class="card-title">STRI Safety Sentiment Index</h3>
+                            <span class="badge badge-mixed">Prototype</span>
+                        </div>
+                        <div class="score-display">
+                            <div class="score-circle score-mixed">
+                                <svg class="progress-ring" width="140" height="140">
+                                    <circle class="progress-ring-bg" cx="70" cy="70" r="60" fill="none" stroke="#e2e8f0" stroke-width="8"/>
+                                    <circle class="progress-ring-fill" cx="70" cy="70" r="60" fill="none" stroke="#f59e0b" stroke-width="8" stroke-dasharray="377" stroke-dashoffset="105" stroke-linecap="round" transform="rotate(-90 70 70)"/>
+                                </svg>
+                                <div class="score-inner">
+                                    <span class="score-value" id="scoreValue">72</span>
+                                    <span class="score-max">/ 100</span>
+                                </div>
+                            </div>
+                            <div class="score-details">
+                                <div class="score-status">
+                                    <span class="sentiment-dot dot-mixed"></span>
+                                    <strong>Moderately Positive</strong>
+                                </div>
+                                <p class="score-opinions">248 opinions analyzed</p>
+                                <div class="score-trend trend-up">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                                    <span>↑ 8% more positive than previous period</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="disclaimer">This index represents reported/perceived safety sentiment, not an objective prediction of crime or physical safety.</p>
+                    </div>
+
+                    <!-- Community Sentiment -->
+                    <div class="card animate-slide-up stagger-4" id="sentimentCard">
+                        <h3 class="card-title">Overall Community Sentiment</h3>
+                        <div class="donut-chart-container">
+                            <div class="donut-chart">
+                                <svg viewBox="0 0 120 120" width="160" height="160">
+                                    <circle cx="60" cy="60" r="50" fill="none" stroke="#e2e8f0" stroke-width="12"/>
+                                    <circle cx="60" cy="60" r="50" fill="none" stroke="#10b981" stroke-width="12" stroke-dasharray="150.8 163.36" stroke-dashoffset="0" transform="rotate(-90 60 60)" class="donut-segment"/>
+                                    <circle cx="60" cy="60" r="50" fill="none" stroke="#f59e0b" stroke-width="12" stroke-dasharray="84.82 229.34" stroke-dashoffset="-150.8" transform="rotate(-90 60 60)" class="donut-segment"/>
+                                    <circle cx="60" cy="60" r="50" fill="none" stroke="#ef4444" stroke-width="12" stroke-dasharray="78.54 235.62" stroke-dashoffset="-235.62" transform="rotate(-90 60 60)" class="donut-segment"/>
+                                </svg>
+                            </div>
+                            <div class="donut-legend">
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background:#10b981"></span>
+                                    <span>Positive</span>
+                                    <strong>48%</strong>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background:#f59e0b"></span>
+                                    <span>Neutral</span>
+                                    <strong>27%</strong>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background:#ef4444"></span>
+                                    <span>Negative</span>
+                                    <strong>25%</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-secondary text-center mt-2">248 opinions analyzed</p>
+                    </div>
+                </div>
+
+                <!-- Safety Aspects -->
+                <div class="section animate-slide-up stagger-5">
+                    <h3 class="section-title">What are people talking about?</h3>
+                    <p class="section-subtitle">AI-detected safety aspects from community opinions</p>
+                    <div class="aspects-grid" id="aspectsGrid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Time-Based Safety -->
+                <div class="section animate-slide-up stagger-6">
+                    <h3 class="section-title">When do people feel safest?</h3>
+                    <div class="time-grid" id="timeGrid">
+                        <!-- Populated by JS -->
+                    </div>
+                    <div class="card card-accent mt-3" id="timeExplanation">
+                        <div class="ai-label">
+                            <span class="ai-icon">🧠</span>
+                            <span>AI Analysis</span>
+                        </div>
+                        <p id="timeExplanationText"></p>
+                    </div>
+                </div>
+
+                <!-- AI Insight -->
+                <div class="card insight-card animate-slide-up stagger-7" id="aiInsightDashboard">
+                    <div class="insight-header">
+                        <div class="ai-label">
+                            <span class="ai-icon">🧠</span>
+                            <span>STRI AI Insight</span>
+                        </div>
+                    </div>
+                    <p class="insight-text" id="insightSummary"></p>
+                    <div class="insight-columns">
+                        <div class="insight-col">
+                            <h4 class="text-negative">Most reported concerns</h4>
+                            <ol class="insight-list" id="insightConcerns"></ol>
+                        </div>
+                        <div class="insight-col">
+                            <h4 class="text-positive">Positive signals</h4>
+                            <ol class="insight-list" id="insightPositives"></ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Philosophy Card -->
+                <div class="card philosophy-card animate-slide-up stagger-8">
+                    <div class="philosophy-grid">
+                        <div class="philosophy-item philosophy-old">
+                            <h4>Traditional safety apps</h4>
+                            <p>Something happens → user presses SOS</p>
+                        </div>
+                        <div class="philosophy-vs">vs</div>
+                        <div class="philosophy-item philosophy-new">
+                            <h4>STRI</h4>
+                            <p>People share experiences → AI identifies patterns → users understand potential concerns <strong>before</strong> travelling</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== ANALYZE PAGE ==================== -->
+            <div class="page" id="page-analyze">
+                <div class="page-header animate-fade-in">
+                    <h2>Analyze Safety</h2>
+                    <p class="page-description" id="analyzeLocation">Mullana → Ambala Cantt</p>
+                </div>
+
+                <!-- Analysis Status -->
+                <div class="card card-lg animate-slide-up" id="analysisStatus">
+                    <div class="analysis-stats">
+                        <div class="analysis-stat">
+                            <span class="analysis-stat-value">248</span>
+                            <span class="analysis-stat-label">community opinions</span>
+                        </div>
+                        <div class="analysis-stat">
+                            <span class="analysis-stat-value">✓</span>
+                            <span class="analysis-stat-label">AI analysis completed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Processing Animation -->
+                <div class="card card-lg ai-processing" id="aiProcessing" style="display:none;">
+                    <h3 class="processing-title">
+                        <span class="processing-spinner"></span>
+                        STRI AI is analyzing community experiences...
+                    </h3>
+                    <div class="processing-steps">
+                        <div class="processing-step" data-step="1">
+                            <span class="step-icon">⏳</span>
+                            <span>Reading opinions</span>
+                        </div>
+                        <div class="processing-step" data-step="2">
+                            <span class="step-icon">⏳</span>
+                            <span>Detecting safety aspects</span>
+                        </div>
+                        <div class="processing-step" data-step="3">
+                            <span class="step-icon">⏳</span>
+                            <span>Classifying sentiment</span>
+                        </div>
+                        <div class="processing-step" data-step="4">
+                            <span class="step-icon">⏳</span>
+                            <span>Finding recurring concerns</span>
+                        </div>
+                        <div class="processing-step" data-step="5">
+                            <span class="step-icon">⏳</span>
+                            <span>Generating safety intelligence</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Pipeline Visualization -->
+                <div class="section animate-slide-up stagger-1">
+                    <h3 class="section-title">How STRI Analyzes Safety</h3>
+                    <div class="ai-pipeline">
+                        <div class="pipeline-step-card">
+                            <div class="pipeline-step-icon">💬</div>
+                            <h4>Community Opinions</h4>
+                            <p>248 real experiences</p>
+                        </div>
+                        <div class="pipeline-arrow-v">↓</div>
+                        <div class="pipeline-step-card">
+                            <div class="pipeline-step-icon">🔍</div>
+                            <h4>AI Aspect Extraction</h4>
+                            <p>Identifying what people discuss</p>
+                        </div>
+                        <div class="pipeline-arrow-v">↓</div>
+                        <div class="pipeline-step-card">
+                            <div class="pipeline-step-icon">🎯</div>
+                            <h4>Sentiment Classification</h4>
+                            <p>Understanding how they feel</p>
+                        </div>
+                        <div class="pipeline-arrow-v">↓</div>
+                        <div class="pipeline-step-card">
+                            <div class="pipeline-step-icon">🔗</div>
+                            <h4>Pattern Detection</h4>
+                            <p>17 recurring patterns found</p>
+                        </div>
+                        <div class="pipeline-arrow-v">↓</div>
+                        <div class="pipeline-step-card pipeline-step-accent">
+                            <div class="pipeline-step-icon">🛡️</div>
+                            <h4>STRI Safety Intelligence</h4>
+                            <p>Score: 72/100</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review Intelligence -->
+                <div class="section animate-slide-up stagger-2">
+                    <h3 class="section-title">AI Review Intelligence</h3>
+                    <p class="section-subtitle">STRI identifies the specific safety factors people discuss and understands how they feel about each one.</p>
+                    <div class="review-intelligence" id="reviewIntelligence">
+                        <!-- First 5 reviews populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Safety Index Breakdown -->
+                <div class="section animate-slide-up stagger-3">
+                    <h3 class="section-title">Safety Sentiment Breakdown</h3>
+                    <p class="section-subtitle">How STRI arrives at the prototype score</p>
+                    <div class="card card-lg">
+                        <div class="breakdown-bars" id="breakdownBars">
+                            <!-- Populated by JS -->
+                        </div>
+                        <div class="breakdown-result">
+                            <span class="breakdown-label">Final Score</span>
+                            <span class="breakdown-score">72 / 100</span>
+                        </div>
+                        <p class="disclaimer mt-2">Prototype AI Safety Index — The index summarizes perceived safety sentiment from community opinions. It is not a verified crime-risk score.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== MAP PAGE ==================== -->
+            <div class="page" id="page-map">
+                <div class="page-header animate-fade-in">
+                    <h2>Safety Map</h2>
+                    <p class="page-description">Community-reported safety sentiment across locations</p>
+                </div>
+
+                <div class="card card-lg map-wrapper animate-slide-up">
+                    <div class="map-container" id="mapContainer">
+                        <svg class="map-svg" viewBox="0 0 800 500" id="mapSvg">
+                            <!-- Road grid -->
+                            <defs>
+                                <pattern id="gridPattern" width="40" height="40" patternUnits="userSpaceOnUse">
+                                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+                                </pattern>
+                                <filter id="glow">
+                                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                            <rect width="800" height="500" fill="#f1f5f9" rx="12"/>
+                            <rect width="800" height="500" fill="url(#gridPattern)"/>
+
+                            <!-- Roads -->
+                            <path d="M 50 250 Q 200 250 280 150 Q 360 50 500 100 Q 640 150 750 100" stroke="#cbd5e1" stroke-width="16" fill="none" stroke-linecap="round" opacity="0.6"/>
+                            <path d="M 50 250 Q 200 250 280 150 Q 360 50 500 100 Q 640 150 750 100" stroke="#94a3b8" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="8,6"/>
+
+                            <path d="M 100 450 Q 250 350 400 300 Q 550 250 700 350" stroke="#cbd5e1" stroke-width="12" fill="none" stroke-linecap="round" opacity="0.6"/>
+                            <path d="M 100 450 Q 250 350 400 300 Q 550 250 700 350" stroke="#94a3b8" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="8,6"/>
+
+                            <path d="M 280 50 L 280 450" stroke="#cbd5e1" stroke-width="10" fill="none" opacity="0.5"/>
+                            <path d="M 280 50 L 280 450" stroke="#94a3b8" stroke-width="2" fill="none" stroke-dasharray="6,4"/>
+
+                            <path d="M 560 30 L 560 470" stroke="#cbd5e1" stroke-width="10" fill="none" opacity="0.5"/>
+                            <path d="M 560 30 L 560 470" stroke="#94a3b8" stroke-width="2" fill="none" stroke-dasharray="6,4"/>
+
+                            <path d="M 350 200 Q 420 280 560 280" stroke="#cbd5e1" stroke-width="8" fill="none" opacity="0.4"/>
+
+                            <!-- Location labels -->
+                            <text x="60" y="240" fill="#64748b" font-size="11" font-family="Inter">Mullana</text>
+                            <text x="710" y="90" fill="#64748b" font-size="11" font-family="Inter">Ambala Cantt</text>
+
+                            <!-- Route label -->
+                            <text x="380" y="80" fill="#6366f1" font-size="10" font-family="Inter" font-weight="600" text-anchor="middle">Mullana → Ambala Cantt Route</text>
+
+                            <!-- Hotspots will be added by JS -->
+                        </svg>
+
+                        <!-- Map Legend -->
+                        <div class="map-legend">
+                            <h4>Safety Sentiment</h4>
+                            <div class="legend-item"><span class="legend-dot dot-positive"></span> Positive</div>
+                            <div class="legend-item"><span class="legend-dot dot-mixed"></span> Mixed</div>
+                            <div class="legend-item"><span class="legend-dot dot-negative"></span> Negative</div>
+                        </div>
+                    </div>
+
+                    <!-- Hotspot detail panel -->
+                    <div class="hotspot-detail" id="hotspotDetail" style="display:none;">
+                        <button class="hotspot-close" onclick="closeHotspot()">×</button>
+                        <h3 id="hotspotName"></h3>
+                        <div class="hotspot-score-row">
+                            <div class="hotspot-score" id="hotspotScore"></div>
+                            <span class="hotspot-score-label">/ 100</span>
+                            <span class="badge" id="hotspotBadge"></span>
+                        </div>
+                        <p class="text-secondary" id="hotspotOpinions"></p>
+                        <p id="hotspotDescription"></p>
+                        <div id="hotspotConcerns"></div>
+                        <div id="hotspotPositives"></div>
+                        <button class="btn btn-secondary mt-2" onclick="navigateTo('community')">View community opinions →</button>
+                    </div>
+                </div>
+
+                <!-- Hotspot Cards -->
+                <div class="section animate-slide-up stagger-2">
+                    <h3 class="section-title">Location Safety Scores</h3>
+                    <div class="hotspot-grid" id="hotspotGrid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== COMMUNITY VOICE PAGE ==================== -->
+            <div class="page" id="page-community">
+                <div class="page-header animate-fade-in">
+                    <h2>Community Voice</h2>
+                    <p class="page-description">Real experiences reveal patterns that numbers alone cannot.</p>
+                </div>
+
+                <div class="community-stats animate-slide-up">
+                    <div class="stat-card">
+                        <span class="stat-value">248</span>
+                        <span class="stat-label">opinions analyzed</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value">17</span>
+                        <span class="stat-label">recurring safety patterns</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value">8</span>
+                        <span class="stat-label">major safety aspects</span>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="filter-bar animate-slide-up stagger-1" id="filterBar">
+                    <button class="filter-chip active" data-filter="all" onclick="filterReviews('all')">All</button>
+                    <button class="filter-chip" data-filter="positive" onclick="filterReviews('positive')">Positive</button>
+                    <button class="filter-chip" data-filter="neutral" onclick="filterReviews('neutral')">Neutral</button>
+                    <button class="filter-chip" data-filter="negative" onclick="filterReviews('negative')">Negative</button>
+                    <button class="filter-chip" data-filter="lighting" onclick="filterReviews('lighting')">💡 Lighting</button>
+                    <button class="filter-chip" data-filter="night" onclick="filterReviews('night')">🌙 Night Safety</button>
+                    <button class="filter-chip" data-filter="traffic" onclick="filterReviews('traffic')">🚗 Traffic</button>
+                    <button class="filter-chip" data-filter="crowd" onclick="filterReviews('crowd')">👥 Crowd</button>
+                    <button class="filter-chip" data-filter="walkability" onclick="filterReviews('walkability')">🚶 Walkability</button>
+                    <button class="filter-chip" data-filter="crossing" onclick="filterReviews('crossing')">🚧 Crossing</button>
+                </div>
+
+                <!-- Reviews -->
+                <div class="reviews-feed" id="reviewsFeed">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Report Button -->
+                <button class="fab-button" onclick="openReportModal()" title="Report an unsafe spot">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+            </div>
+
+            <!-- ==================== INSIGHTS PAGE ==================== -->
+            <div class="page" id="page-insights">
+                <div class="page-header animate-fade-in">
+                    <h2>STRI Intelligence</h2>
+                    <p class="page-description">AI-generated safety insights from community data</p>
+                </div>
+
+                <!-- Top Concerns -->
+                <div class="card card-lg animate-slide-up stagger-1">
+                    <h3 class="card-title">
+                        <span class="text-negative">🔴</span> Top Safety Concerns
+                    </h3>
+                    <div class="insight-list-numbered" id="topConcerns">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Positive Signals -->
+                <div class="card card-lg animate-slide-up stagger-2">
+                    <h3 class="card-title">
+                        <span class="text-positive">🟢</span> Positive Signals
+                    </h3>
+                    <div class="insight-list-numbered" id="positiveSignals">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Emerging Trend -->
+                <div class="card card-accent animate-slide-up stagger-3">
+                    <h3 class="card-title">📈 Emerging Trend</h3>
+                    <p class="insight-text" id="emergingTrend"></p>
+                </div>
+
+                <!-- AI Recommendation -->
+                <div class="card insight-card animate-slide-up stagger-4">
+                    <div class="insight-header">
+                        <div class="ai-label">
+                            <span class="ai-icon">🧠</span>
+                            <span>AI Recommendation</span>
+                        </div>
+                        <span class="badge badge-mixed">AI-generated prototype insight</span>
+                    </div>
+                    <p class="insight-text" id="aiRecommendation"></p>
+                </div>
+
+                <!-- Safety Index Breakdown -->
+                <div class="card card-lg animate-slide-up stagger-5">
+                    <h3 class="card-title">Safety Sentiment Breakdown</h3>
+                    <div class="breakdown-bars" id="insightBreakdown">
+                        <!-- Populated by JS -->
+                    </div>
+                    <div class="breakdown-result">
+                        <span class="breakdown-label">Prototype AI Safety Index</span>
+                        <span class="breakdown-score">72 / 100</span>
+                    </div>
+                    <p class="disclaimer mt-2">The index summarizes perceived safety sentiment from community opinions. It is not a verified crime-risk score.</p>
+                </div>
+
+                <!-- Safe Journey Mode -->
+                <div class="section animate-slide-up stagger-6">
+                    <h3 class="section-title">Safe Journey Mode</h3>
+                    <div class="card card-lg" id="journeyCard">
+                        <div id="journeyInactive">
+                            <p class="text-secondary mb-2">Start a simulated safe journey with periodic check-ins.</p>
+                            <button class="btn btn-primary" onclick="startJourney()">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+                                Start Safe Journey
+                            </button>
+                        </div>
+                        <div id="journeyActive" style="display:none;">
+                            <div class="journey-header">
+                                <span class="badge badge-positive">Journey in progress</span>
+                                <div class="journey-score">Safety Index: <strong>72/100</strong></div>
+                            </div>
+                            <div class="journey-timer">
+                                <span class="text-secondary">Next check-in:</span>
+                                <span class="journey-countdown" id="journeyCountdown">04:59</span>
+                            </div>
+                            <div class="journey-actions">
+                                <button class="btn btn-primary" onclick="confirmSafe()">✓ I'm Safe</button>
+                                <button class="btn btn-danger" onclick="triggerEmergency()">🚨 Emergency Alert</button>
+                            </div>
+                        </div>
+                        <div id="journeyEmergency" style="display:none;">
+                            <div class="emergency-alert">
+                                <h3>🚨 Demo Alert Activated</h3>
+                                <p>In a real deployment, this action could notify configured trusted contacts.</p>
+                                <p class="disclaimer mt-2">This is a simulation only. No real contacts or emergency services were contacted.</p>
+                                <button class="btn btn-secondary mt-2" onclick="resetJourney()">End Demo</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <p>STRI uses aggregated and prototype community intelligence. Perceived safety scores should not be treated as guarantees of physical safety.</p>
+                <p class="mt-1"><strong>STRI</strong> — Turning community voices into safer roads.</p>
+            </footer>
+        </main>
+
+        <!-- Mobile Navigation -->
+        <nav class="mobile-nav" id="mobileNav">
+            <a href="#" class="mobile-nav-item active" data-page="dashboard" onclick="navigateTo('dashboard')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                <span>Home</span>
+            </a>
+            <a href="#" class="mobile-nav-item" data-page="analyze" onclick="navigateTo('analyze')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                <span>Analyze</span>
+            </a>
+            <a href="#" class="mobile-nav-item" data-page="map" onclick="navigateTo('map')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/></svg>
+                <span>Map</span>
+            </a>
+            <a href="#" class="mobile-nav-item" data-page="community" onclick="navigateTo('community')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                <span>Voice</span>
+            </a>
+        </nav>
+
+        <!-- Report Modal -->
+        <div class="modal-overlay" id="reportModal" style="display:none;" onclick="closeReportModal(event)">
+            <div class="modal" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <h3>Report an Unsafe Spot</h3>
+                    <button class="modal-close" onclick="closeReportModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" class="form-input" placeholder="Enter location" id="reportLocation">
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select class="form-select" id="reportCategory">
+                            <option value="">Select category</option>
+                            <option>Poor lighting</option>
+                            <option>Unsafe crossing</option>
+                            <option>Traffic</option>
+                            <option>Road condition</option>
+                            <option>Low visibility</option>
+                            <option>Harassment concern</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-textarea" rows="4" placeholder="Describe what you experienced or observed..." id="reportDescription"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeReportModal()">Cancel</button>
+                    <button class="btn btn-primary" onclick="submitReport()">Add to Community Intelligence</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div class="toast-container" id="toastContainer"></div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
