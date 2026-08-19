@@ -78,23 +78,24 @@ window.STRI_DATA = {
   ],
   timeSafetyExplanation: 'Community sentiment across Ambala drops sharply after 8 PM, driven by reduced pedestrian presence on connecting roads and inadequate lighting around underpasses and bus terminals.',
 
-  // Ambala District GPS Bounds & Hotspots
-  ambalaBounds: {
-    center: [30.3600, 76.8100],
-    zoom: 12,
-    minZoom: 10,
-    maxZoom: 18,
+  // Full Haryana State GPS Bounds & Statewide Hotspots
+  haryanaBounds: {
+    center: [29.4500, 76.7500],
+    zoom: 8,
+    minZoom: 7,
+    maxZoom: 19,
     bounds: [
-      [30.1000, 76.5000], // Southwest
-      [30.6500, 77.2500]  // Northeast (Ambala District Boundary)
+      [27.4500, 74.2500], // Southwest (Sirsa/Rajasthan border)
+      [31.1500, 77.8500]  // Northeast (Panchkula/Himachal/Yamunanagar border)
     ]
   },
 
-  // Ambala Map hotspots with exact GPS Coordinates
+  // Haryana Statewide Safety Hotspots with exact GPS Coordinates
   hotspots: [
     {
-      id: 'sadar-bazar',
+      id: 'sadar-bazar-ambala',
       name: 'Sadar Bazar (Ambala Cantt)',
+      city: 'Ambala',
       score: 86,
       sentiment: 'positive',
       lat: 30.3448,
@@ -106,34 +107,135 @@ window.STRI_DATA = {
       positives: ['Dense foot traffic & active shops — 34 mentions', 'Bright streetlights — 29 mentions', 'Frequent PCR van patrols — 20 mentions']
     },
     {
-      id: 'railway-station',
-      name: 'Ambala Cantt Railway Junction',
-      score: 76,
+      id: 'panchkula-sec5',
+      name: 'Sector 5 & Town Park (Panchkula)',
+      city: 'Panchkula',
+      score: 88,
       sentiment: 'positive',
-      lat: 30.3308,
-      lng: 76.8402,
-      x: 640, y: 310,
-      opinions: 62,
-      description: 'Premier 24/7 railway gateway with round-the-clock transport, tea stalls, and RPF beat posts.',
-      concerns: ['Chaotic auto-rickshaw parking — 19 mentions', 'Late night touts — 14 mentions'],
-      positives: ['Round-the-clock commuter movement — 38 mentions', 'Immediate public transport access — 31 mentions']
+      lat: 30.6942,
+      lng: 76.8606,
+      x: 560, y: 110,
+      opinions: 74,
+      description: 'Well-planned administrative and recreation hub with bright LED avenues, regular police beats, and safe evening walkability.',
+      concerns: ['MDC back-roads quiet after 10 PM — 9 mentions'],
+      positives: ['Wide well-lit avenues — 41 mentions', 'High CCTV coverage — 35 mentions', 'Active evening family crowd — 32 mentions']
     },
     {
-      id: 'cloth-market',
-      name: 'Cloth Market (Ambala City)',
-      score: 81,
+      id: 'kurukshetra-univ',
+      name: 'University Road & Brahma Sarovar (Kurukshetra)',
+      city: 'Kurukshetra',
+      score: 84,
       sentiment: 'positive',
-      lat: 30.3804,
-      lng: 76.7725,
-      x: 210, y: 170,
-      opinions: 56,
-      description: 'Famous wholesale textile market in Ambala City with high daytime family and women shopper presence.',
-      concerns: ['Narrow lanes for two-wheelers — 18 mentions'],
-      positives: ['Very safe daytime shopping vibe — 36 mentions', 'Merchant community surveillance — 24 mentions']
+      lat: 29.9695,
+      lng: 76.8344,
+      x: 530, y: 220,
+      opinions: 59,
+      description: 'Vibrant academic and cultural hub with continuous student presence, well-lit tourist avenues, and police assistance booths.',
+      concerns: ['Dim lighting on third gate bypass — 12 mentions'],
+      positives: ['Safe walking environment — 38 mentions', 'Heavy student foot traffic — 31 mentions']
     },
     {
-      id: 'bus-stand',
-      name: 'Jagadhri Road / Cantt Bus Stand',
+      id: 'karnal-modeltown',
+      name: 'Model Town & Mall Road (Karnal)',
+      city: 'Karnal',
+      score: 79,
+      sentiment: 'positive',
+      lat: 29.6857,
+      lng: 76.9905,
+      x: 540, y: 260,
+      opinions: 52,
+      description: 'Clean smart-city commercial corridor with active cafes, bright storefront illumination, and PCR surveillance.',
+      concerns: ['Traffic bottlenecks near Committee Chowk — 14 mentions'],
+      positives: ['Excellent daytime and evening illumination — 28 mentions', 'Family-friendly environment — 25 mentions']
+    },
+    {
+      id: 'panipat-gt',
+      name: 'GT Road & Textile Hub (Panipat)',
+      city: 'Panipat',
+      score: 56,
+      sentiment: 'mixed',
+      lat: 29.3909,
+      lng: 76.9635,
+      x: 520, y: 310,
+      opinions: 65,
+      description: 'High-density industrial and textile transit corridor with heavy heavy-vehicle traffic and dark underpass pockets.',
+      concerns: ['Dim underpass crossings — 26 mentions', 'Chaotic truck and auto movement — 22 mentions'],
+      positives: ['Bustling wholesale market — 21 mentions']
+    },
+    {
+      id: 'sonipat-murthal',
+      name: 'Murthal NH-44 Hub (Sonipat)',
+      city: 'Sonipat',
+      score: 78,
+      sentiment: 'positive',
+      lat: 28.9931,
+      lng: 77.0151,
+      x: 510, y: 370,
+      opinions: 61,
+      description: 'Famous 24/7 highway culinary corridor on NH-44 with non-stop illumination, heavy commuter movement, and active private security.',
+      concerns: ['High-speed highway crossings — 17 mentions'],
+      positives: ['Round-the-clock footfall & eateries — 39 mentions', 'Bright highway floodlights — 33 mentions']
+    },
+    {
+      id: 'gurugram-cyber',
+      name: 'Cyber City & DLF Phase 2 (Gurugram)',
+      city: 'Gurugram',
+      score: 73,
+      sentiment: 'mixed',
+      lat: 28.4897,
+      lng: 77.0890,
+      x: 520, y: 440,
+      opinions: 98,
+      description: 'Massive modern corporate hub with top-tier daytime security, rapid metro connectivity, though isolated service lanes at late hours.',
+      concerns: ['Dark unlit service lane stretches — 34 mentions', 'Late night cab stand congestion — 28 mentions'],
+      positives: ['High private security & CCTV density — 48 mentions', 'Active Rapid Metro corridors — 37 mentions']
+    },
+    {
+      id: 'faridabad-nit',
+      name: 'NIT Market & Metro Corridor (Faridabad)',
+      city: 'Faridabad',
+      score: 62,
+      sentiment: 'mixed',
+      lat: 28.3970,
+      lng: 77.3100,
+      x: 560, y: 460,
+      opinions: 67,
+      description: 'Dense commercial market area with metro connectivity, though inner lanes face low night-time lighting.',
+      concerns: ['Dim lighting in sector market lanes — 23 mentions', 'Congested pedestrian footpaths — 19 mentions'],
+      positives: ['Active metro station perimeter — 27 mentions']
+    },
+    {
+      id: 'rohtak-mdu',
+      name: 'MDU Campus & Delhi Road (Rohtak)',
+      city: 'Rohtak',
+      score: 68,
+      sentiment: 'mixed',
+      lat: 28.8955,
+      lng: 76.6066,
+      x: 430, y: 360,
+      opinions: 54,
+      description: 'Major student university belt with lively daytime foot traffic, but bypass connector roads become deserted after dark.',
+      concerns: ['Sparse lighting on outer bypass — 18 mentions', 'Quiet campus perimeter after 8:30 PM — 15 mentions'],
+      positives: ['Safe daytime student movement — 31 mentions', 'Security checkpoints — 19 mentions']
+    },
+    {
+      id: 'hisar-hau',
+      name: 'CCS HAU Campus Road & Auto Market (Hisar)',
+      city: 'Hisar',
+      score: 66,
+      sentiment: 'mixed',
+      lat: 29.1492,
+      lng: 75.7217,
+      x: 290, y: 320,
+      opinions: 49,
+      description: 'Wide planned avenues with lush university campus, though outer industrial bypass stretches lack consistent lighting.',
+      concerns: ['Vacant outer plots at night — 19 mentions', 'Inconsistent streetlights — 14 mentions'],
+      positives: ['Wide paved roads — 24 mentions', 'Peaceful daytime walkability — 18 mentions']
+    },
+    {
+      id: 'bus-stand-ambala',
+      name: 'Jagadhri Road / Cantt Bus Stand (Ambala)',
+      city: 'Ambala',
       score: 42,
       sentiment: 'negative',
       lat: 30.3345,
@@ -145,30 +247,18 @@ window.STRI_DATA = {
       positives: ['Dhabas open till 10:30 PM — 18 mentions']
     },
     {
-      id: 'model-town',
-      name: 'Model Town (Ambala City)',
-      score: 68,
-      sentiment: 'mixed',
-      lat: 30.3701,
-      lng: 76.7820,
-      x: 270, y: 280,
-      opinions: 48,
-      description: 'Well-settled residential avenue with parks, but inner service lanes become dark after 9 PM.',
-      concerns: ['Dim lighting in back-lanes — 16 mentions', 'Quiet & deserted post 9:30 PM — 14 mentions'],
-      positives: ['Safe evening family walks — 26 mentions', 'Active resident community — 18 mentions']
-    },
-    {
-      id: 'sector-7',
-      name: 'Sector 7 / Urban Estate',
-      score: 54,
-      sentiment: 'mixed',
-      lat: 30.3580,
-      lng: 76.8040,
-      x: 350, y: 380,
-      opinions: 42,
-      description: 'Developing urban area with wide roads, but isolated vacant sectors and insufficient night illumination.',
-      concerns: ['Vacant plots feel isolated at night — 22 mentions', 'Inconsistent streetlights — 17 mentions'],
-      positives: ['Wide paved roads — 20 mentions', 'Peaceful daytime walkability — 15 mentions']
+      id: 'cloth-market-ambala',
+      name: 'Cloth Market (Ambala City)',
+      city: 'Ambala',
+      score: 81,
+      sentiment: 'positive',
+      lat: 30.3804,
+      lng: 76.7725,
+      x: 210, y: 170,
+      opinions: 56,
+      description: 'Famous wholesale textile market in Ambala City with high daytime family and women shopper presence.',
+      concerns: ['Narrow lanes for two-wheelers — 18 mentions'],
+      positives: ['Very safe daytime shopping vibe — 36 mentions', 'Merchant community surveillance — 24 mentions']
     }
   ],
 

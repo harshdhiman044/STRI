@@ -57,7 +57,7 @@ function navigateTo(page) {
 }
 
 // =============================================
-// Interactive Leaflet & GPS System (Ambala District)
+// Interactive Leaflet & GPS System (Haryana State)
 // =============================================
 
 let ambalaMap = null;
@@ -65,25 +65,38 @@ let userGpsMarker = null;
 let userGpsAccuracyCircle = null;
 let leafletMarkers = {};
 
+const HARYANA_CITIES_COORDS = {
+    'Ambala': [30.3600, 76.8100],
+    'Panchkula': [30.6942, 76.8606],
+    'Kurukshetra': [29.9695, 76.8344],
+    'Karnal': [29.6857, 76.9905],
+    'Panipat': [29.3909, 76.9635],
+    'Sonipat': [28.9931, 77.0151],
+    'Gurugram': [28.4897, 77.0890],
+    'Faridabad': [28.3970, 77.3100],
+    'Rohtak': [28.8955, 76.6066],
+    'Hisar': [29.1492, 75.7217]
+};
+
 function initAmbalaLeafletMap() {
     if (typeof L === 'undefined') return;
     const mapElement = document.getElementById('ambalaLeafletMap');
     if (!mapElement || ambalaMap) return;
 
     const D = window.STRI_DATA;
-    const bounds = D.ambalaBounds;
+    const bounds = D.haryanaBounds;
 
     const southWest = L.latLng(bounds.bounds[0][0], bounds.bounds[0][1]);
     const northEast = L.latLng(bounds.bounds[1][0], bounds.bounds[1][1]);
-    const ambalaDistrictBounds = L.latLngBounds(southWest, northEast);
+    const haryanaStateBounds = L.latLngBounds(southWest, northEast);
 
     ambalaMap = L.map('ambalaLeafletMap', {
         center: bounds.center,
         zoom: bounds.zoom,
         minZoom: bounds.minZoom,
         maxZoom: bounds.maxZoom,
-        maxBounds: ambalaDistrictBounds,
-        maxBoundsViscosity: 1.0,
+        maxBounds: haryanaStateBounds,
+        maxBoundsViscosity: 0.9,
         attributionControl: true
     });
 
@@ -94,24 +107,28 @@ function initAmbalaLeafletMap() {
         maxZoom: 19
     }).addTo(ambalaMap);
 
-    // Ambala District boundary guide
-    const districtBoundaryPolygon = L.polygon([
-        [30.5500, 76.6500],
-        [30.5800, 77.0500],
-        [30.4500, 77.1800],
-        [30.2200, 77.1000],
-        [30.1500, 76.8500],
-        [30.2200, 76.6000],
-        [30.4000, 76.6200]
+    // Haryana State boundary highlight polygon
+    const haryanaBoundaryPolygon = L.polygon([
+        [30.9000, 76.8500], // Panchkula / Kalka
+        [30.5000, 77.4000], // Yamunanagar
+        [29.7000, 77.1500], // Karnal Yamuna border
+        [28.8000, 77.2500], // Delhi border North
+        [28.3000, 77.5000], // Faridabad/Palwal
+        [27.7000, 77.3000], // Nuh / Mewat South
+        [27.9000, 76.1000], // Mahendragarh/Narnaul
+        [28.6000, 75.8000], // Bhiwani/Charkhi Dadri
+        [29.4000, 74.8000], // Sirsa West
+        [30.0000, 75.3000], // Fatehabad
+        [30.5000, 76.4000]  // Ambala / Punjab border
     ], {
         color: '#6366f1',
-        weight: 2,
-        dashArray: '5, 8',
+        weight: 2.5,
+        dashArray: '6, 8',
         fillColor: '#6366f1',
-        fillOpacity: 0.03
+        fillOpacity: 0.04
     }).addTo(ambalaMap);
 
-    districtBoundaryPolygon.bindTooltip('Ambala District Boundary', { permanent: false, direction: 'center' });
+    haryanaBoundaryPolygon.bindTooltip('Haryana State Safety Grid (22 Districts)', { permanent: false, direction: 'center' });
 
     // Render each hotspot as a custom sentiment pin
     D.hotspots.forEach(h => {
@@ -125,16 +142,17 @@ function initAmbalaLeafletMap() {
                 </div>
                 <div class="stri-marker-tip"></div>
             `,
-            iconSize: [36, 30],
-            iconAnchor: [18, 30],
-            popupAnchor: [0, -28]
+            iconSize: [38, 32],
+            iconAnchor: [19, 32],
+            popupAnchor: [0, -30]
         });
 
         const marker = L.marker([h.lat, h.lng], { icon: customIcon }).addTo(ambalaMap);
         leafletMarkers[h.id] = marker;
 
         const popupContent = `
-            <div style="font-family: Inter, sans-serif; min-width: 180px; padding: 4px;">
+            <div style="font-family: Inter, sans-serif; min-width: 200px; padding: 4px;">
+                <div style="font-size: 10px; font-weight: 700; color: #6366f1; text-transform: uppercase;">${h.city || 'Haryana'} District</div>
                 <div style="font-weight: 800; font-size: 13px; color: #0f172a; margin-bottom: 2px;">${h.name}</div>
                 <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
                     <span style="font-weight: 800; font-size: 15px; color: ${h.sentiment === 'positive' ? '#10b981' : h.sentiment === 'negative' ? '#ef4444' : '#f59e0b'};">${h.score}/100</span>
@@ -142,8 +160,8 @@ function initAmbalaLeafletMap() {
                 </div>
                 <div style="font-size: 11px; color: #475569; margin-bottom: 8px;">${h.description}</div>
                 <div style="display:flex; gap: 4px;">
-                    <button onclick="showHotspot('${h.id}')" style="background:#6366f1; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:10px; font-weight:700; cursor:pointer;">Inspect</button>
-                    <a href="https://www.google.com/maps/search/?api=1&query=${h.lat},${h.lng}" target="_blank" style="background:#0f172a; color:white; text-decoration:none; padding:4px 8px; border-radius:6px; font-size:10px; font-weight:700;">Google Maps ↗</a>
+                    <button onclick="showHotspot('${h.id}')" style="background:#6366f1; color:white; border:none; padding:5px 9px; border-radius:6px; font-size:10px; font-weight:700; cursor:pointer;">Inspect Details</button>
+                    <a href="https://www.google.com/maps/search/?api=1&query=${h.lat},${h.lng}" target="_blank" style="background:#0f172a; color:white; text-decoration:none; padding:5px 9px; border-radius:6px; font-size:10px; font-weight:700;">Google Maps ↗</a>
                 </div>
             </div>
         `;
@@ -159,10 +177,41 @@ function initAmbalaLeafletMap() {
         L.circle([h.lat, h.lng], {
             color: circleColor,
             fillColor: circleColor,
-            fillOpacity: 0.1,
-            radius: 400
+            fillOpacity: 0.12,
+            radius: 600
         }).addTo(ambalaMap);
     });
+}
+
+function focusHaryanaCity(city) {
+    document.querySelectorAll('.city-pill').forEach(p => p.classList.remove('active'));
+    const targetPill = event && event.target ? event.target : document.querySelector(`.city-pill[onclick*="${city}"]`);
+    if (targetPill) targetPill.classList.add('active');
+
+    if (!ambalaMap) {
+        initAmbalaLeafletMap();
+    }
+    if (!ambalaMap) return;
+
+    const D = window.STRI_DATA;
+
+    if (city === 'all') {
+        ambalaMap.setView(D.haryanaBounds.center, D.haryanaBounds.zoom, { animate: true });
+        showToast('Viewing full Haryana State GPS Safety Grid.', 'info');
+    } else if (HARYANA_CITIES_COORDS[city]) {
+        const coords = HARYANA_CITIES_COORDS[city];
+        ambalaMap.setView(coords, 13, { animate: true });
+
+        // Find the hotspot in that city and open it
+        const cityHotspot = D.hotspots.find(h => h.city === city);
+        if (cityHotspot && leafletMarkers[cityHotspot.id]) {
+            setTimeout(() => {
+                leafletMarkers[cityHotspot.id].openPopup();
+                showHotspot(cityHotspot.id);
+            }, 300);
+        }
+        showToast(`📍 Focused on ${city}, Haryana.`, 'info');
+    }
 }
 
 function getUserLiveLocation() {
@@ -176,16 +225,16 @@ function getUserLiveLocation() {
     }
 
     btnText.textContent = 'Acquiring GPS...';
-    statusText.textContent = 'Locating...';
+    statusText.textContent = 'Locating in Haryana...';
 
     navigator.geolocation.getCurrentPosition(
         (position) => {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
-            const accuracy = Math.round(position.coords.accuracy || 12);
+            const accuracy = Math.round(position.coords.accuracy || 8);
 
             btnText.textContent = 'Live GPS Active';
-            statusText.textContent = `Live GPS: ±${accuracy}m accuracy`;
+            statusText.textContent = `Haryana GPS: ±${accuracy}m accuracy`;
 
             // Update emergency panel coordinates
             const emergencyCoords = document.getElementById('emergencyCoords');
@@ -230,29 +279,37 @@ function getUserLiveLocation() {
                     weight: 1.5
                 }).addTo(ambalaMap);
 
-                // Check distance to Ambala center
+                // Find nearest hotspot in Haryana
                 const D = window.STRI_DATA;
-                const ambalaCenter = D.ambalaBounds.center;
-                const distToAmbala = calculateDistanceKm(lat, lng, ambalaCenter[0], ambalaCenter[1]);
+                let nearestHotspot = null;
+                let minDistance = Infinity;
 
-                if (distToAmbala < 35) {
-                    ambalaMap.setView([lat, lng], 14);
-                    showToast(`📍 Live GPS pinned in Ambala District (±${accuracy}m accuracy).`, 'success');
+                D.hotspots.forEach(h => {
+                    const dist = calculateDistanceKm(lat, lng, h.lat, h.lng);
+                    if (dist < minDistance) {
+                        minDistance = dist;
+                        nearestHotspot = h;
+                    }
+                });
+
+                // Pan smoothly to user location
+                ambalaMap.setView([lat, lng], 14, { animate: true });
+
+                if (nearestHotspot) {
+                    showToast(`📍 Live GPS pinned! Nearest STRI Hub: ${nearestHotspot.name} (${minDistance} km away).`, 'success');
                 } else {
-                    ambalaMap.setView(ambalaCenter, 12);
-                    showToast(`📍 GPS captured (${lat.toFixed(4)}°N, ${lng.toFixed(4)}°E). Ambala District safety boundary focused.`, 'info');
+                    showToast(`📍 Live GPS pinned successfully in Haryana (±${accuracy}m accuracy).`, 'success');
                 }
             }
         },
         (error) => {
             console.warn('GPS Error:', error);
             btnText.textContent = 'Track Live GPS';
-            statusText.textContent = 'Simulated Ambala GPS';
-            showToast('Simulated GPS Active: Centered on Ambala Cantt & City.', 'info');
+            statusText.textContent = 'Simulated Haryana GPS';
+            showToast('Simulated GPS Active: Centered across Haryana State.', 'info');
 
-            // Default simulate to Ambala Cantt
             if (ambalaMap) {
-                ambalaMap.setView([30.3448, 76.8415], 13);
+                ambalaMap.setView([29.4500, 76.7500], 8);
             }
         },
         { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }

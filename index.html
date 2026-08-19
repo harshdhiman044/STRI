@@ -401,14 +401,30 @@
                             <span id="gpsBtnText">Track Live GPS</span>
                         </button>
                         <div class="map-view-toggles">
-                            <button class="map-toggle-btn active" id="btnStreetView" onclick="switchMapView('street')">🗺️ Interactive GPS Map</button>
-                            <button class="map-toggle-btn" id="btnRadarView" onclick="switchMapView('radar')">📡 Vector Radar</button>
+                            <button class="map-toggle-btn active" id="btnStreetView" onclick="switchMapView('street')">🗺️ Haryana Live GPS Map</button>
+                            <button class="map-toggle-btn" id="btnRadarView" onclick="switchMapView('radar')">📡 Ambala Corridor Radar</button>
                         </div>
                     </div>
                     <div class="map-controls-right">
-                        <span class="badge badge-district">📍 Ambala District Lock (Haryana)</span>
-                        <span class="gps-status-indicator" id="gpsStatusText">GPS Ready</span>
+                        <span class="badge badge-district">📍 Full Haryana GPS Coverage (22 Districts)</span>
+                        <span class="gps-status-indicator" id="gpsStatusText">Statewide GPS Active</span>
                     </div>
+                </div>
+
+                <!-- Haryana City Quick Jump Bar -->
+                <div class="haryana-cities-bar animate-slide-up">
+                    <span class="cities-bar-label">Quick Jump:</span>
+                    <button class="city-pill active" onclick="focusHaryanaCity('all')">All Haryana</button>
+                    <button class="city-pill" onclick="focusHaryanaCity('Ambala')">Ambala</button>
+                    <button class="city-pill" onclick="focusHaryanaCity('Panchkula')">Panchkula</button>
+                    <button class="city-pill" onclick="focusHaryanaCity('Kurukshetra')">Kurukshetra</button>
+                    <button class="city-pill" onclick="focusHaryanaCity('Karnal')">Karnal</button>
+                    <button class="city-pill" onclick="focusHaryanaCity('Panipat')">Panipat</button>
+                    <button class="city-pill" onclick="focusHaryanaCity('Sonipat')">Sonipat</button>
+                    <button class="city-pill" onclick="focusHaryanaCity('Gurugram')">Gurugram</button>
+                    <button class="city-pill" onclick="focusHaryanaCity('Faridabad')">Faridabad</button>
+                    <button class="city-pill" onclick="focusHaryanaCity('Rohtak')">Rohtak</button>
+                    <button class="city-pill" onclick="focusHaryanaCity('Hisar')">Hisar</button>
                 </div>
 
                 <div class="card card-lg map-wrapper animate-slide-up">
